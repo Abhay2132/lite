@@ -11,6 +11,7 @@ makeFreshDir(dist)
 
 const renderer = engine({
   baseLayout : baseLayout,
+  base,
   // useCache: true
 })
 
@@ -54,3 +55,4 @@ function readDir(dir, fileOnly=true){
 }
 
 console.timeEnd("Build Finished")
+// console.log({BASE_URL : process.env.BASE_URL})
