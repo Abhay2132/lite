@@ -2,6 +2,7 @@ body {
     margin: 0;
     height: var(--innerH, 100vh);
     position: relative;
+    --innerH : 100vh;
 }
 
 * {
