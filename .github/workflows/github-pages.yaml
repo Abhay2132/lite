@@ -37,7 +37,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name : Setup .env vars
-        run : echo "BASE_URL=${{ vars.BASE_URL }}" > .env
+        run : echo "BASE_URL=${{ vars.BASE_URL }}" > .env ; cat .env
       - name: Build
         run: npm run build
       - name: Setup Pages
