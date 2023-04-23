@@ -1,14 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> <%= title %> </title>
-    <base href="<% if(base) { %><%=base%><% } else { %>/<% } %>" target="_blank" />
+    <title>
+        <%= title %>
+    </title>
+    <base href="<% if(base) { %><%=base%><% } else { %>/<% } %>" target="_self" />
+    <link rel="stylesheet" href="css/colors.css">
     <link rel="stylesheet" href="css/global.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.ico" />
 </head>
+
 <body>
-    <%- include(body, {...options}) %>
+    <nav>
+        <label id="hmbgr" for="hmbgr-input">
+            <hr />
+            <hr />
+            <hr />
+        </label>
+        <div id="mainHeading">
+            <%= typeof(h1)=="undefined" ? "Apps" :h1 %>
+        </div>
+    </nav>
+    <input id="hmbgr-input" type="checkbox" class="hidden" />
+    <div id="side-panel">
+        <a href="#" class="side-panel-item" active="true"><span>Item</span></a>
+        <a href="#" class="side-panel-item"><span>Item</span></a>
+        <a href="#" class="side-panel-item"><span>Item</span></a>
+        <a href="#" class="side-panel-item"><span>Item</span></a>
+        <a href="#" class="side-panel-item"><span>Item</span></a>
+    </div>
+    <label for="hmbgr-input" id="sp-bg"></label>
+
+    <main>
+        <%- include(body, {...options}) %>
+    </main>
 </body>
+<script>
+    (() => {
+        function setH() {
+            let h = window.innerHeight + "px";
+            let w = window.innerWidth + "px";
+            document.documentElement.style.setProperty("--innerH", h);
+            document.documentElement.style.setProperty("--innerW", w);
+        }
+        setH();
+        window.onresize = setH;
+    })();
+</script>
+
 </html>

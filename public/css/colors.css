@@ -1,0 +1,83 @@
+:root {
+	/*Default Theme Variables*/
+
+	--hmbgr-clr: #333;
+	--hmbgr-hvr: #ccc;
+	--nav-bg: #fff;
+	--nav-clr: #333;
+	--nav-shd-clr: #bbb;
+	--side-panel-bg: var(--nav-bg);
+	--side-panel-item-clr: #222;
+	--spi-bg: #dedede;
+	--side-panel-icon-invert: 0;
+	--sp-item-bg: red;
+	--window-bg: #fff;
+	--window-clr: #222;
+
+	/*dark Theme Variables*/
+	--dark-hmbgr-clr: #aaa;
+	--dark-hmbgr-hvr: #333;
+	--dark-nav-bg: #222;
+	--dark-nav-clr: #eee;
+	--dark-nav-shd-clr: transparent;
+	--dark-side-panel-bg: var(--dark-nav-bg);
+	--dark-side-panel-item-clr: #ddd;
+	--dark-spi-bg: #555;
+	--dark-side-panel-icon-invert: 0.7;
+	--dark-sp-item-bg: transparent;
+	--dark-window-bg: #333;
+	--dark-window-clr: #eee;
+
+	/*Dark Backgrounds*/
+	--bg-f: #fff;
+	--bg-e: #eee;
+	--bg-d: #ddd;
+	--bg-c: #ccc;
+	--bg-b: #bbb;
+	--bg-a: #aaa;
+
+	/*Light Font Color */
+	--clr-0: #000;
+	--clr-1: #111;
+	--clr-2: #222;
+	--clr-3: #333;
+	--clr-4: #444;
+	--clr-5: #555;
+
+	--invert-1: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--hmbgr-clr: var(--dark-hmbgr-clr);
+		--hmbgr-hvr: var(--dark-hmbgr-hvr);
+		--nav-bg: var(--dark-nav-bg);
+		--nav-clr: var(--dark-nav-clr);
+		--nav-shd-clr: var(--dark-nav-shd-clr);
+		--side-panel-bg: var(--dark-side-panel-bg);
+		--side-panel-item-clr: var(--dark-side-panel-item-clr);
+		--spi-bg: var(--dark-spi-bg);
+		--side-panel-icon-invert: var(--dark-side-panel-icon-invert);
+		--window-bg: var(--dark-window-bg);
+		--window-clr: var(--dark-window-clr);
+
+		/*Dark Backgrounds*/
+		--bg-f: #000;
+		--bg-e: #111;
+		--bg-d: #222;
+		--bg-c: #333;
+		--bg-b: #444;
+		--bg-a: #555;
+
+		/*Light Font Color */
+		--clr-0: #fff;
+		--clr-1: #eee;
+		--clr-2: #ddd;
+		--clr-3: #ccc;
+		--clr-4: #bbb;
+		--clr-5: #aaa;
+
+		/* invert */
+		--invert-1: 1;
+	}
+}

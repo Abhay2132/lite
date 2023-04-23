@@ -5,7 +5,7 @@ const { resolve: r, join: j } = require("path");
 
 const engineOptions = { 
     baseLayout: j(r(), "views", "layouts", "main.ejs") ,
-    base : process.env.BASE_URL || "/",
+    // base : process.env.BASE_URL || "/",
     // globalOptions: {title: "Apps"},
     // useCache: true
 }
