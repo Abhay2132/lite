@@ -1,8 +1,15 @@
+html{
+    --innerH : 100vh;
+    --innerW : 100vw;
+}
+
 body {
     margin: 0;
-    height: var(--innerH, 100vh);
+    height: calc(var(--innerH) - 50px);
+    /* height: var(--innerH); */
     position: relative;
-    --innerH : 100vh;
+    box-sizing: border-box;
+    /* background: red; */
 }
 
 * {
@@ -10,15 +17,19 @@ body {
 }
 
 nav {
-    background: white;
+    background: rgba(255, 255, 255, 0.7);
     color: #333;
     height: 50px;
     box-sizing: border-box;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     display: flex;
+    width: 100%;
+
+    /* opacity: 0.9; */
+    backdrop-filter: blur(5px);
+    
     position: fixed;
     top: 0;
-    width: 100%;
 }
 
 nav>#mainHeading {
@@ -149,7 +160,7 @@ nav:has(+ #hmbgr-input:checked) #hmbgr hr:nth-child(1){
 }
 
 #sp-bg{
-    height: calc(var(--innerH) - 60px);
+    height: calc(var(--innerH) - 50px);
     width: var(--innerW, 100%);
     position: fixed;
     top: 50px;
@@ -167,5 +178,6 @@ nav:has(+ #hmbgr-input:checked) + input + #side-panel + label#sp-bg{
 main {
     display: block;
     margin: 50px 0 0 0;
-    /* background-color: red; */
+    /* background: linear-gradient(5deg, orange, yellowgreen); */
+    /* height: calc(3 * var(--innerH)); */
 }
