@@ -7,6 +7,7 @@ const pages = {
 const viewDir = j(r(), "views")
 module.exports = {
     viewDir,
+    ext : "ejs",
     baseLayout: j(viewDir, "layouts", "main.ejs"),
     pages
 }

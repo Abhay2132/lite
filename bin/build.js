@@ -1,4 +1,4 @@
-const {pages, baseLayout} = require("./pages.config")
+const {pages, baseLayout, viewDir, ext} = require("./pages.config")
 const {resolve: r , join: j} = require("path")
 const fs = require("fs")
 const {engine} = require("./ejs");
@@ -14,21 +14,21 @@ const renderer = engine({
 
 for(let page in pages){
   renderer(
-    pages[page].view,
+    j(viewDir, pages[page].view+"."+ext),
     {...pages[page]}, 
     function (err, html) {
       if(err) return console.error(page,"Error\n",err)
-      console.log(page, html)
+      if(!fs.existsSync(j(dist, page))) fs.mkdirSync(j(dist, page), {recursive:true})
+      fs.writeFileSync(j(dist, page, "index.html"), html);
     }
   )
-  // fs.writeFileSync(j(dist, page, "index.html"), );
 }
 
 let publicFiles = readDir(public).flat()
 publicFiles
 .forEach((file)=>{
   let target = j(dist, file.slice(public.length))
-  let dir = target.split("/").slice(0,-1);
+  let dir = target.split("/").slice(0,-1).join("/")
   if(!fs.existsSync(dir)) fs.mkdirSync(dir, {recursive:true})
   fs.writeFileSync(target, fs.readFileSync(file).toString())
 })
