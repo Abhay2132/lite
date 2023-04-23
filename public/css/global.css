@@ -150,7 +150,7 @@ nav:has(+ #hmbgr-input:checked) #hmbgr hr:nth-child(1){
 
 #sp-bg{
     height: calc(var(--innerH) - 60px);
-    width: var(--innerW);
+    width: var(--innerW, 100%);
     position: fixed;
     top: 50px;
     display: block;
