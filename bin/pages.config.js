@@ -35,7 +35,13 @@ function parseEnv (env){
         if(parts.length>2) parts[1] = parts.slice(1).join("");
         // console.log({parts});
         let name = parts[0].trim();
-        let value = eval(parts[1].trim())
+        let value = parts[1].trim()
+        if(
+            (value[0]=="'" && value[value.length-1] == "'")
+            || (value[0]=='"' && value[value.length-1]=='"')
+        )
+            value = value.slice(1,-1)
+        
         map.set(name, value)
     })
     return map;
