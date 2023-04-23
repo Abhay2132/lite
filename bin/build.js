@@ -55,4 +55,4 @@ function readDir(dir, fileOnly=true){
 }
 
 console.timeEnd("Build Finished")
-// console.log({BASE_URL : process.env.BASE_URL})
+console.log({BASE_URL : process.env.BASE_URL, base})
