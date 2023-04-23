@@ -30,6 +30,7 @@ function parseEnv (env){
     data.split("\n")
     .forEach(line=>{
         let parts = line.split("=")
+        console.log('i',{parts})
         if(parts.length>2) parts[1] = parts.slice(1).join("");
         console.log({parts});
         let name = parts[0].trim();
