@@ -1,4 +1,6 @@
-const {pages, baseLayout, viewDir, ext} = require("./pages.config")
+console.time("Build Finished")
+
+const {pages, baseLayout, viewDir, ext, base} = require("./pages.config")
 const {resolve: r , join: j} = require("path")
 const fs = require("fs")
 const {engine} = require("./ejs");
@@ -15,7 +17,7 @@ const renderer = engine({
 for(let page in pages){
   renderer(
     j(viewDir, pages[page].view+"."+ext),
-    {...pages[page]}, 
+    {...pages[page], base}, 
     function (err, html) {
       if(err) return console.error(page,"Error\n",err)
       if(!fs.existsSync(j(dist, page))) fs.mkdirSync(j(dist, page), {recursive:true})
@@ -50,3 +52,5 @@ function readDir(dir, fileOnly=true){
   if(!items.length && !fileOnly) return dir//console.log({items, fileOnly});
   return items;
 }
+
+console.timeEnd("Build Finished")

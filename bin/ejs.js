@@ -8,7 +8,7 @@ const ejsCache = new Map();
 // because in dev ( not 'useCache' ) we uses sync io for fast reads
 
 function engine(eopts) {
-    const { baseLayout = j(r(), "views", ""), ejsOptions={}, globalOptions = {}, useCache = (process.env.NODE_ENV || "").toLowerCase() == "production" } = eopts;
+    const { baseLayout = j(r(), "views", ""), base = false, ejsOptions={}, globalOptions = {}, useCache = (process.env.NODE_ENV || "").toLowerCase() == "production" } = eopts;
 
     function renderer(filepath, options, callback) {
         fs.readFile(filepath, (err, data) => {
@@ -17,11 +17,11 @@ function engine(eopts) {
             if(useCache){
                 if(!ejsCache.has(baseLayout)) ejsCache.set(baseLayout, ejs.compile(fs.readFileSync(baseLayout).toString(), ejsOptions));
                 let layoutTemp = ejsCache.get(baseLayout);
-                if (!ejsCache.has(filepath)) ejsCache.set(filepath, layoutTemp({ ...globalOptions, ...options, options, body: filepath }))
+                if (!ejsCache.has(filepath)) ejsCache.set(filepath, layoutTemp({ base , ...globalOptions, ...options, options, body: filepath }))
                 var rendered = ejsCache.get(filepath);
             } else {
                 // let layoutTemp = ejs.compile(fs.readFileSync(baseLayout).toString(), ejsOptions)
-                var rendered = ejs.render(fs.readFileSync(baseLayout).toString(), { ...globalOptions, ...options, options, body: filepath }, ejsOptions);
+                var rendered = ejs.render(fs.readFileSync(baseLayout).toString(), { base, ...globalOptions, ...options, options, body: filepath }, ejsOptions);
             }
             callback(null, rendered);
             // console.log("rendered in ", (performance.now() - it).toFixed(1) + " ms");
