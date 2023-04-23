@@ -30,6 +30,7 @@ function parseEnv (env){
     .forEach(line=>{
         let parts = line.split("=")
         if(parts.length>2) parts[1] = parts.slice(1).join("");
+        console.log(parts);
         let name = parts[0].trim();
         let value = eval(parts[1].trim())
         map.set(name, value)
