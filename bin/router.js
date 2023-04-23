@@ -1,6 +1,6 @@
 const {Router} = require("express")
 const router = Router();
-const pages = require("./pages.config")
+const {pages} = require("./pages.config")
 
 router.use((req, res, next)=>{
     let it = performance.now();
