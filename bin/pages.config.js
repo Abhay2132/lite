@@ -26,13 +26,14 @@ module.exports = {
 function parseEnv (env){ 
     let map = new Map();
     let data = fs.readFileSync(env).toString();
-    console.log({data})
+    // console.log({data})
     data.split("\n")
     .forEach(line=>{
+        if(line.length<1) return;
         let parts = line.split("=")
-        console.log('i',{parts})
+        // console.log('i',{parts})
         if(parts.length>2) parts[1] = parts.slice(1).join("");
-        console.log({parts});
+        // console.log({parts});
         let name = parts[0].trim();
         let value = eval(parts[1].trim())
         map.set(name, value)
