@@ -3,9 +3,9 @@ const app = express();
 const { engine } = require("./ejs")
 const { resolve: r, join: j } = require("path");
 const mode = process.env?.NODE_ENV?.toLowerCase() == "production" ? "pro" : "dev";
-const { baseLayout } = require("../pages.config")
+const { baseLayout , viewDir} = require("../pages.config")
 
-app.engine("ejs", engine({ baseLayout }));
+app.engine("ejs", engine({ baseLayout , globalOptions:{viewDir}}));
 app.set('views', "./views");
 app.set("view engine", "ejs");
 

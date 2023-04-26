@@ -19,5 +19,6 @@ module.exports = {
   base: argv.get("--base") || "",
   ext: "ejs",
   baseLayout: j(viewDir, "layouts", "main.ejs"),
-  pages
+  pages,
+  host: argv.get("--host") || ""
 }

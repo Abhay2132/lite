@@ -1,5 +1,6 @@
 console.time("Build Finished")
 
+const sass = require("sass")
 const { pages, baseLayout, viewDir, ext, base } = require("../pages.config")
 const { resolve: r, join: j } = require("path")
 const fs = require("fs")
@@ -11,7 +12,7 @@ const pagesDir = j(r(), "pages");
 
 makeFreshDir(dist)
 
-const renderer = engine({ baseLayout, base })
+const renderer = engine({ baseLayout, base , globalOptions: {viewDir}})
 
 // writes pages html in 'dist' dir
 for (let page in pages) {
@@ -51,5 +52,15 @@ ls(public)
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
     fs.writeFileSync(target, fs.readFileSync(file).toString())
   })
+
+  // compile sass
+ls(j(r(), "sass"))
+.forEach(file =>{
+  let target = j(dist, file.slice(r().length)).replace(".scss", ".css")
+  let dir = target.split("/").slice(0, -1).join("/")
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
+
+  fs.writeFileSync(target, sass.compile(file, {style:"compressed"}).css)
+})
 
 console.timeEnd("Build Finished")

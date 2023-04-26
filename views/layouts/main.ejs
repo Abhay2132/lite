@@ -8,7 +8,8 @@
     <title>
         <%= title %>
     </title>
-    <link rel="stylesheet" href="<%=base%>/css/global.css">
+    <!-- <link rel="stylesheet" href="<%=base%>/css/global.css"> -->
+    <link rel="stylesheet" href="<%base%>/sass/global.css">
     <link rel="icon" type="image/svg+xml" href="favicon.ico" />
 </head>
 
@@ -24,15 +25,15 @@
         </div>
     </nav>
     <input id="hmbgr-input" type="checkbox" class="hidden" />
+    
     <div id="side-panel">
-        <a href="#" class="side-panel-item" active="true"> <img src="<%=base%>/imgs/icons/home.svg"/> <span>Item</span></a>
-        <a href="#" class="side-panel-item"> <img src="<%=base%>/imgs/icons/home.svg"/> <span>Item</span></a>
-        <a href="#" class="side-panel-item"> <img src="<%=base%>/imgs/icons/home.svg"/> <span>Item</span></a>
-        <a href="#" class="side-panel-item"> <img src="<%=base%>/imgs/icons/home.svg"/> <span>Item</span></a>
-        <a href="#" class="side-panel-item"> <img src="<%=base%>/imgs/icons/home.svg"/> <span>Item</span></a>
+        <%- include(viewDir + "/ui/spi.ejs" , { href:"#", icon:"home", text:"Item", id:"spi-1", checked:1}) %>
+        <%- include(viewDir + "/ui/spi.ejs" , { href:"#", icon:"home", text:"Item", id:"spi-2"}) %>
+        <%- include(viewDir + "/ui/spi.ejs" , { href:"#", icon:"home", text:"Item", id:"spi-3"}) %>
+
     </div>
     <label for="hmbgr-input" id="sp-bg"></label>
-
+    
     <main>
         <%- include(body, {...options}) %>
     </main>

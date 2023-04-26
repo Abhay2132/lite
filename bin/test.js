@@ -1,13 +1,6 @@
-const esb = require('esbuild')
+const sass = require("sass")
 const { resolve: r, join: j } = require("path");
 const log = console.log
 
-esb.build({
-  entryPoints: [j(r(), "src","main.js")],
-  bundle: true,
-  outfile: j(r(), "dist", "js", "main.js"),
-  minify: true
-})
-.then(bundle =>{
-  log({bundle})
-})
+const css = sass.compile(j(r(),"scss", "global.scss"))
+log({css})
