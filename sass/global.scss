@@ -151,6 +151,10 @@ nav:has(+ #hmbgr-input:checked) #hmbgr hr:nth-child(1) {
   width: 26px !important;
 }
 
+#hmbgr-input:checked + div + #sp-bg {
+  transform: scale(1);
+}
+
 #sp-bg {
   height: calc(var(--innerH) - 50px);
   width: var(--innerW, 100%);
