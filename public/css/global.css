@@ -9,7 +9,7 @@ body {
     /* height: var(--innerH); */
     position: relative;
     box-sizing: border-box;
-    /* background: red; */
+    --sp-w: 0;
 }
 
 * {
@@ -73,23 +73,18 @@ nav>#mainHeading {
     right: 0;
     transform: scale(0);
 }
-/* 
-#hmbgr-input:checked{
-    transform: scale(1);
-} */
 
 #hmbgr-input:checked + #side-panel {
-    transform: translateX(0) !important;
+    --sp-w: min(50%, 200px) ;
 }
 
 
 /*  SIDE PANEL CSS  */
 #side-panel {
-    background: var(--bg-f);
+    background: #fff;
     padding: 0;
     margin: 0 !important;
-    --w : min(50%, 200px);
-    width: var(--w);
+    width: var(--sp-w);
     height: calc(var(--innerH) - 50px);
     transition: 200ms;
     display: block;
@@ -100,7 +95,7 @@ nav>#mainHeading {
     top: 50px;
     z-index: 999 !important;
     border-right: 1px solid rgba(0, 0, 0, 0.2);
-    transform: translateX(calc(-2 * var(--w)));
+    /* transform: translateX(calc(-2 * var(--w))); */
     box-sizing: border-box;
 }
 
@@ -123,8 +118,10 @@ nav>#mainHeading {
     background-color: #5c6bc0 !important;
 }
 
-a img {
+.side-panel-item img {
     height: 25px;
+    aspect-ratio: 1/1;
+    /* background: red; */
     filter: invert(var(--side-panel-icon-invert)) !important;
     margin: 0;
     padding: 0;
@@ -132,10 +129,9 @@ a img {
 
 .side-panel-item>span {
     display: block;
-    /*  background-color: green;*/
     line-height: 25px;
     height: 25px;
-    margin-left: 10px;
+    margin-left: 20px;
 }
 
 #side-panel-items {
@@ -177,7 +173,11 @@ nav:has(+ #hmbgr-input:checked) + input + #side-panel + label#sp-bg{
 
 main {
     display: block;
-    margin: 50px 0 0 0;
-    /* background: linear-gradient(5deg, orange, yellowgreen); */
-    /* height: calc(3 * var(--innerH)); */
+    margin: 50px 0 0 var(--sp-w);
 }
+
+@media only screen and (min-width: 600px) {
+    body {
+        --sp-w: 45px;
+    }
+  }

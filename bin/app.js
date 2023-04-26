@@ -2,19 +2,14 @@ const express = require('express')
 const app = express();
 const { engine } = require("./ejs")
 const { resolve: r, join: j } = require("path");
+const mode = process.env?.NODE_ENV?.toLowerCase() == "production" ? "pro" : "dev";
+const { baseLayout } = require("../pages.config")
 
-const engineOptions = { 
-    baseLayout: j(r(), "views", "layouts", "main.ejs") ,
-    // base : process.env.BASE_URL || "/",
-    // globalOptions: {title: "Apps"},
-    // useCache: true
-}
-
-app.engine("ejs", engine(engineOptions));
+app.engine("ejs", engine({ baseLayout }));
 app.set('views', "./views");
 app.set("view engine", "ejs");
 
-app.use(express.static(j(r(),"public")));
+app.use(express.static(j(r(), mode == "dev" ? "public" : "dist")));
 app.use(require("./router"));
 
 module.exports = app;

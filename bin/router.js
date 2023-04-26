@@ -1,6 +1,7 @@
 const {Router} = require("express")
 const router = Router();
-const {pages} = require("./pages.config")
+const {pages} = require("../pages.config")
+const mode = process.env?.NODE_ENV?.toLowerCase() == "production" ? "pro" : "dev";
 
 router.use((req, res, next)=>{
     let it = performance.now();
@@ -11,9 +12,16 @@ router.use((req, res, next)=>{
 })
 
 for(let url in pages){
-    router.get(url, (req, res)=>{
-        res.render(pages[url].view,{...pages[url]})
+    const o = pages[url];
+    if(o.isStatic && mode=="pro") continue;
+    router.get(url, async (req, res)=>{
+        let extra = await o.loader();
+        res.render(o.view,{...o, ...extra})
     })
 }
+
+router.get("/error",(req,res)=>{
+    res.render("error", {layout: "empty"})
+})
 
 module.exports = router;
