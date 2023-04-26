@@ -24,4 +24,5 @@ router.get("/error",(req,res)=>{
     res.render("error", {layout: "empty"})
 })
 
+router.use(require("./api/router"));
 module.exports = router;
