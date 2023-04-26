@@ -1,0 +1,1 @@
+export const wait = n => new Promise(r=> setTimeout(r, n||0));
