@@ -83,11 +83,14 @@ nav {
   overflow: hidden;
   position: fixed !important;
   top: 49px;
-  z-index: 999 !important;
+  z-index: 998 !important;
   border-right: 1px solid rgba(0, 0, 0, 0.2);
   /* transform: translateX(calc(-2 * var(--w))); */
   box-sizing: border-box;
 
+  *{
+    z-index: 999 !important;
+  }
 
   .side-panel-item {
     height: 40px;

@@ -11,5 +11,5 @@ app.set("view engine", "ejs");
 app.use(express.static(j(r(), mode == "dev" ? "public" : "dist")));
 app.use(require("./router"));
 
-if(mode == 'dev') require("./esbuild").watch();
+// if(mode == 'dev') require("./esbuild").watch();
 module.exports = app;

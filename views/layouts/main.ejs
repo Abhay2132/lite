@@ -26,9 +26,9 @@
     <input id="hmbgr-input" type="checkbox" class="hidden" />
     
     <div id="side-panel">
-        <%- include(viewDir + "/ui/spi.ejs" , { href:"#", icon:"home", text:"Item", id:"spi-1", checked:1}) %>
-        <%- include(viewDir + "/ui/spi.ejs" , { href:"#", icon:"home", text:"Item", id:"spi-2"}) %>
-        <%- include(viewDir + "/ui/spi.ejs" , { href:"#", icon:"home", text:"Item", id:"spi-3"}) %>
+        <%- include(viewDir + "/ui/spi.ejs" , { href: "#", icon:"home", text:"Home", id:"spi-1", checked: title == "Appz"}) %>
+        <%- include(viewDir + "/ui/spi.ejs" , { href: "#", icon:"home", text:"About", id:"spi-2",checked : title == "About"}) %>
+        <%- include(viewDir + "/ui/spi.ejs" , { href: "#", icon:"home", text:"Settings", id:"spi-3" , checked: title == "Settings"}) %>
 
     </div>
     <label for="hmbgr-input" id="sp-bg"></label>

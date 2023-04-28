@@ -8,10 +8,11 @@ process.argv.filter(Boolean).forEach(arg => {
   argv.set(key, val);
 })
 
-const e = (view, title, isStatic = true, loader = () => ({})) => ({ view, title, isStatic, loader })
+const e = (view, title, isStatic = true, loader = () => ({}), extra={}) => ({ view, title, isStatic, loader , ...extra})
 const pages = {
   "/": e('index', 'Appz', !1),
   "/about": e('about', "About"),
+  "/404" : e('404', "Page Not Found !")
 }
 
 module.exports = {

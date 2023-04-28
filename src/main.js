@@ -1,7 +1,3 @@
-import {wait} from "./hlpr"
+import {init} from "./spa.js";
 
-(async ()=>{
-  console.log("heelo")
-  await wait(2000)
-  console.log(base, "INDIA")
-})();
+init();

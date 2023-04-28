@@ -1,6 +1,7 @@
+const { log } = require("console");
 const ejs = require("ejs");
 const fs = require("fs");
-const { resolve: r, join: j } = require("path")
+const { mode , resolve: r, join: j } = require("path")
 
 const ejsCache = new Map();
 
@@ -31,8 +32,8 @@ function engine(eopts) {
         // 2. `useCache` (for production mode) : when a page needs dynamically loaded data in `options`
         // 3. `none`     (for dev mode)        : recompile the whole template on every request
         try {
-
-            if (options.isStatic) {
+            // log(options.isStatic, useCache, mode)
+            if (options.isStatic && mode == 'pro') {
                 if (ejsCache.has(filepath)) return callback(null, ejsCache.get(filepath));
                 if (!ejsCache.has(filepath)) ejsCache.set(filepath, ejsCache.get(layout)(renderOpts))
                 rendered = ejsCache.get(filepath);
