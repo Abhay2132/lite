@@ -6,6 +6,6 @@
   (async () => {
     console.log("heelo");
     await wait(2e3);
-    console.log("INDIA");
+    console.log(base, "INDIA");
   })();
 })();

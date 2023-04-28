@@ -8,11 +8,9 @@ const { engine } = require("./ejs");
 
 const dist = j(r(), 'dist');
 const public = j(r(), "public");
-const pagesDir = j(r(), "pages");
 
 makeFreshDir(dist)
-
-const renderer = engine({ baseLayout, base, globalOptions: { viewDir, base } })
+const renderer = engine({ baseLayout, base, globalOptions: { viewDir } })
 
 // writes pages -> html in 'dist' dir
 for (let page in pages) {
