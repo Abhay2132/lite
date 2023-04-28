@@ -1,6 +1,7 @@
 html {
   --innerH: 100vh;
   --innerW: 100vw;
+  // background: green;
 }
 
 body {
@@ -155,7 +156,7 @@ nav:has(+ #hmbgr-input:checked) #hmbgr hr:nth-child(1) {
   transform: scale(1);
 }
 
-#sp-bg {
+label#sp-bg {
   height: calc(var(--innerH) - 50px);
   width: var(--innerW, 100%);
   position: fixed;

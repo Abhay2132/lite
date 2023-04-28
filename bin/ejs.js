@@ -3,7 +3,6 @@ const fs = require("fs");
 const { resolve: r, join: j } = require("path")
 
 const ejsCache = new Map();
-const getLayoutPath = name => j(r(), "pages", "_layouts", name + (name.endsWith(".ejs") ? "" : ".ejs"));
 
 function engine(eopts) {
     const {
@@ -11,9 +10,12 @@ function engine(eopts) {
         base = '',
         ejsOptions = {},
         globalOptions = {},
-        useCache = process.env?.NODE_ENV?.toLowerCase() === "production"
+        useCache = process.env?.NODE_ENV?.toLowerCase() === "production",
+        viewDir = j(r(), "views")
     } = eopts;
+    const getLayoutPath = (name) => j(viewDir, "layouts", name + (name.endsWith(".ejs") ? "" : ".ejs"));
 
+    //  memoize layout
     ejsCache.set(baseLayout, ejs.compile(fs.readFileSync(baseLayout).toString(), ejsOptions));
     function renderer(filepath, options, callback) {
         let rendered = "";
@@ -24,10 +26,10 @@ function engine(eopts) {
             !ejsCache.has(layout) && ejsCache.set(layout, ejs.compile(fs.readFileSync(baseLayout).toString(), ejsOptions))
         }
         var err = null
-        // three cache modes :-
-        // 1. `isStatic` (works in production only): render pages from build dir (/dist)
-        // 2. `useCache` : render pages dynamically with data from async function `loader` in pages.config.js
-        // 3. `none` (for dev mode) : recompile the whole template on every request
+        // three cache strategies :-
+        // 1. `isStatic` (for prodcution mode) : when a page dont't need any dynamic data like db search result
+        // 2. `useCache` (for production mode) : when a page needs dynamically loaded data in `options`
+        // 3. `none`     (for dev mode)        : recompile the whole template on every request
         try {
 
             if (options.isStatic) {

@@ -1,2 +1,0 @@
-const sass = require("sass")
-
