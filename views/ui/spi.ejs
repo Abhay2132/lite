@@ -1,13 +1,13 @@
 <div class="side-panel-item">
-  <input class="hidden" id="<%= id %>" name="spi" type='radio'
+  <!-- <input class="hidden" name="spi" type='radio'
   <% if(typeof checked !="undefined" && Boolean(checked)) {
-    %>checked<% } %> >
-  <a href="<%= href %>" spa-link>
-    <label for="<%=id%>">
+    %>checked<% } %> > -->
+  <a href="<%= href %>" id="<%= id %>" spa-link active="<%=active%>">
+    <!-- <label for="<%=id%>"> -->
       <img src="<%=base%>/imgs/icons/<%= icon %>.svg" />
       <span>
         <%= text %>
       </span>
-    </label>
+    <!-- </label> -->
   </a>
-</div>
+</div> 
