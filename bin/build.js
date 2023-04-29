@@ -8,19 +8,29 @@ const { engine } = require("./ejs");
 
 const dist = j(r(), 'dist');
 const public = j(r(), "public");
-
+const _spa = j(dist, "_spa");
 makeFreshDir(dist)
 const renderer = engine({ baseLayout, base, globalOptions: { viewDir } })
 
 // writes pages -> html in 'dist' dir
 for (let page in pages) {
+  let view = j(viewDir, pages[page].view + "." + ext);
   renderer(
-    j(viewDir, pages[page].view + "." + ext),
+    view,
     { ...pages[page], base },
     function (err, html) {
       if (err) return console.error(page, "Error\n", err)
       if (!fs.existsSync(j(dist, page))) fs.mkdirSync(j(dist, page), { recursive: true })
       fs.writeFileSync(j(dist, page, "index.html"), html);
+    }
+  )
+  renderer(view, {layout: 'empty', base, ...pages[page]},
+    (err, html)=>{
+      if(err) return console.log("_spa build error : ", err)
+      let fp = j(_spa, page+'_.json');
+      let dir = fp.slice(0, _spa.length);
+      if(!fs.existsSync(dir)) fs.mkdirSync(dir, {recursive: true});
+      fs.writeFileSync(fp, JSON.stringify({html}))
     }
   )
 }

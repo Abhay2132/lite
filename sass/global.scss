@@ -9,6 +9,11 @@ body {
   --sp-w: 0;
 }
 
+// disbale scrolling when side-panel opened
+body:has(>nav+#hmbgr-input:checked){
+  overflow: hidden;
+}
+
 * {
   font-family: sans;
 }

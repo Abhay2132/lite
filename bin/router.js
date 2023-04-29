@@ -1,6 +1,7 @@
+const {engine} = require("./ejs");
 const { Router } = require("express")
 const router = Router();
-const { pages, viewDir } = require("../pages.config")
+const { baseLayout, base, pages, viewDir } = require("../pages.config")
 const { resolve: r, join: j } = require("path");
 const { log } = require("console");
 const { readFileSync } = require("fs");
@@ -42,14 +43,19 @@ if (mode == "dev") {
     router.get("/js/*", (req, res, next) => {
         res.sendFile(j(r(),"src",req.url.slice(4)));
     })
-
-    router.get("/spa/*",(req, res, next)=>{
-        let href = req.url.slice(4);
-        if(!pages.hasOwnProperty(href)) return res.json({error:"href is not configed in pages.config.js"});
-        let view = j(viewDir, pages[href].view+"ejs")
-        require('ejs').render(readFileSync(view).toString(), pages[href]);
-    })
 }
+
+const renderer = engine({baseLayout:'empty', base, viewDir})
+router.get("/_spa/*",(req, res, next)=>{
+    let href = req.url.slice(5, -6);
+    if(!pages.hasOwnProperty(href)) return res.json({error:`href (${href}) is not configed in pages.config.js`});
+    let view = j(viewDir, pages[href].view+".ejs")
+    renderer(view, pages[href], (err, html)=>{
+        if(err) return res.json({error: err.stack}) && console.log(err);
+        res.json({html});
+    })
+})
+
 router.use((req, res, next) => {
     if (req.method !== "GET") return next();
     res.redirect('/404')

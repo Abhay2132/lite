@@ -1,29 +1,35 @@
 const { log } = require("console");
 const ejs = require("ejs");
 const fs = require("fs");
-const { mode , resolve: r, join: j } = require("path")
+const { mode, resolve: r, join: j } = require("path")
 
 const ejsCache = new Map();
 
-function engine(eopts) {
-    const {
-        baseLayout = j(r(), "views", ""),
-        base = '',
-        ejsOptions = {},
-        globalOptions = {},
-        useCache = process.env?.NODE_ENV?.toLowerCase() === "production",
-        viewDir = j(r(), "views")
-    } = eopts;
-    const getLayoutPath = (name) => j(viewDir, "layouts", name + (name.endsWith(".ejs") ? "" : ".ejs"));
-
+function engine({
+    baseLayout = j(r(), "views", "empty.ejs"),
+    base = '',
+    ejsOptions = {},
+    globalOptions = {},
+    useCache = process.env?.NODE_ENV?.toLowerCase() === "production",
+    viewDir = j(r(), "views")
+}) {
+    // const = eopts;
+    const getLayoutPath = (name="") => {
+        if(!name.endsWith(".ejs")) name += ".ejs"
+        if(!name.startsWith("/")) name = j(viewDir, "layouts", name);
+        return name;
+    }
+    
+    baseLayout = getLayoutPath(baseLayout);
     //  memoize layout
-    ejsCache.set(baseLayout, ejs.compile(fs.readFileSync(baseLayout).toString(), ejsOptions));
+    ejsCache.set(baseLayout, ejs.compile(fs.readFileSync(getLayoutPath(baseLayout)).toString(), ejsOptions));
     function renderer(filepath, options, callback) {
         let rendered = "";
         let renderOpts = { base, ...globalOptions, ...options, options, body: filepath }
         let { layout = baseLayout } = options;
-        if (layout !== baseLayout && (useCache || isStatic)) {
-            layout = getLayoutPath(layout);
+        layout = getLayoutPath(layout);
+
+        if (layout !== baseLayout && (useCache || options.isStatic)) {
             !ejsCache.has(layout) && ejsCache.set(layout, ejs.compile(fs.readFileSync(baseLayout).toString(), ejsOptions))
         }
         var err = null

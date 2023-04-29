@@ -12,7 +12,8 @@ const e = (view, title, isStatic = true, loader = () => ({}), extra={}) => ({ vi
 const pages = {
   "/": e('index', 'Appz', !1),
   "/about": e('about', "About"),
-  "/404" : e('404', "Page Not Found !")
+  "/404" : e('404', "Page Not Found !"),
+  "/settings": e('settings', "Settings")
 }
 
 module.exports = {
