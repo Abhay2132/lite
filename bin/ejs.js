@@ -29,9 +29,10 @@ function engine({
         let { layout = baseLayout } = options;
         layout = getLayoutPath(layout);
 
-        if (layout !== baseLayout && (useCache || options.isStatic)) {
-            !ejsCache.has(layout) && ejsCache.set(layout, ejs.compile(fs.readFileSync(baseLayout).toString(), ejsOptions))
+        if (layout != baseLayout) {
+            !ejsCache.has(layout) && ejsCache.set(layout, ejs.compile(fs.readFileSync(layout).toString(), ejsOptions))
         }
+        // log({layout})
         var err = null
         // three cache strategies :-
         // 1. `isStatic` (for prodcution mode) : when a page dont't need any dynamic data like db search result
@@ -40,15 +41,17 @@ function engine({
         try {
             // log(options.isStatic, useCache, mode)
             if (options.isStatic && mode == 'pro') {
+                // log("static")
                 if (ejsCache.has(filepath)) return callback(null, ejsCache.get(filepath));
                 if (!ejsCache.has(filepath)) ejsCache.set(filepath, ejsCache.get(layout)(renderOpts))
                 rendered = ejsCache.get(filepath);
             }
             else if (useCache) {
+                // log("useCache", layout)
                 rendered = ejsCache.get(layout)(renderOpts)
             }
             else {
-                log({layout})
+                // log("re-render")
                 rendered = ejs.render(fs.readFileSync(layout).toString(), renderOpts, ejsOptions);
             }
         } catch (e) {

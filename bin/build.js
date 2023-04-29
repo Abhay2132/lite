@@ -31,7 +31,7 @@ for (let page in pages) {
       let fp = j(_spa, page+'_.json');
       let dir = fp.slice(0, _spa.length);
       if(!fs.existsSync(dir)) fs.mkdirSync(dir, {recursive: true});
-      log({html})
+      // log(html.slice(0,html.indexOf("\n")))
       fs.writeFileSync(fp, JSON.stringify({html}))
     }
   )

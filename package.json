@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\"",
     "start": "node .",
     "dev": "npx nodemon --ignore src --ignore public --quiet bin/index.js",
-    "build": "node bin/build.js",
+    "build": "export NODE_ENV='production' ; node bin/build.js",
     "preview":"npm run build && npx serve dist"
   },
   "keywords": [],
