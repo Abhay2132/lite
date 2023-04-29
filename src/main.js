@@ -8,7 +8,7 @@ const onappend = (error)=>{
   document.body.setAttribute("spa", "loaded");
   if(error) return console.error(error);
   
-  let i = paths.indexOf(location.pathname);
+  let i = paths.indexOf(base+location.pathname);
   if(i == -1) return;
 
   $('a.side-panel-item-a[active=true]').setAttribute("active", "false");
