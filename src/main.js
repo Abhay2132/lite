@@ -1,16 +1,22 @@
-import {init} from "./spa.js";
-import {$, $$} from "./hlpr.js"
+import {init, _history} from "./spa.js";
+import {$, $$, log} from "./hlpr.js"
 
-init((error, {e,data})=>{
+const base = window.base || "";
+window._history = _history;
+
+const onappend = (error)=>{
+  document.body.setAttribute("spa", "loaded");
   if(error) return console.error(error);
-  let a = e.target;
-  while(1){
-    if(a.tagName.toLowerCase() == "a") break;
-    a = a.parentNode;
-  }
-  if(a.className !== "side-panel-item-a") return;
+  
+  let i = paths.indexOf(location.pathname);
+  if(i == -1) return;
 
   $('a.side-panel-item-a[active=true]').setAttribute("active", "false");
-  a.setAttribute("active", 'true')
-}); 
+  $$('a.side-panel-item-a')[i].setAttribute("active", 'true')
+}
 
+const onstart = ()=> document.body.setAttribute("spa", "loading");
+
+init({outlet: $('main'), onappend, onstart}); 
+
+const paths = ['/', '/about', '/settings']
