@@ -75,7 +75,7 @@ async function navigate(o, reInit) {
 
   if (!pop) {
     _history.replace('', { href: location.pathname })
-    _history.push(href, { href });
+    _history.push(base+href, { href });
   }
   o.onappend(error)
   reInit(); // re attach the navigator to the new links in outlet
