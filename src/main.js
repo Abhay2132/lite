@@ -13,6 +13,8 @@ const onappend = (error)=>{
 
   $('a.side-panel-item-a[active=true]').setAttribute("active", "false");
   $$('a.side-panel-item-a')[i].setAttribute("active", 'true')
+
+  $('#hmbgr-input').checked = false;
 }
 
 const onstart = ()=> document.body.setAttribute("spa", "loading");
