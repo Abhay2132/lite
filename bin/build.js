@@ -2,7 +2,7 @@ console.time("Build Finished")
 
 const sass = require("sass")
 const { pages, baseLayout, viewDir, ext, base } = require("../pages.config")
-const { r, j, ls, makeFreshDir } = require("./hlpr")
+const { r, j, ls, log,makeFreshDir } = require("./hlpr")
 const fs = require("fs")
 const { engine } = require("./ejs");
 
@@ -24,12 +24,14 @@ for (let page in pages) {
       fs.writeFileSync(j(dist, page, "index.html"), html);
     }
   )
+
   renderer(view, {layout: 'empty', base, ...pages[page]},
     (err, html)=>{
       if(err) return console.log("_spa build error : ", err)
       let fp = j(_spa, page+'_.json');
       let dir = fp.slice(0, _spa.length);
       if(!fs.existsSync(dir)) fs.mkdirSync(dir, {recursive: true});
+      log({html})
       fs.writeFileSync(fp, JSON.stringify({html}))
     }
   )

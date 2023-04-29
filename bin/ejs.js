@@ -48,6 +48,7 @@ function engine({
                 rendered = ejsCache.get(layout)(renderOpts)
             }
             else {
+                log({layout})
                 rendered = ejs.render(fs.readFileSync(layout).toString(), renderOpts, ejsOptions);
             }
         } catch (e) {
