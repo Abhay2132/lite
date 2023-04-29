@@ -8,7 +8,7 @@ const onappend = (error)=>{
   document.body.setAttribute("spa", "loaded");
   if(error) return console.error(error);
   
-  let i = paths.indexOf(base+location.pathname);
+  let i = paths.indexOf(location.pathname);
   if(i == -1) return;
 
   $('a.side-panel-item-a[active=true]').setAttribute("active", "false");
@@ -21,4 +21,4 @@ const onstart = ()=> document.body.setAttribute("spa", "loading");
 
 init({outlet: $('main'), onappend, onstart}); 
 
-const paths = ['/', '/about', '/settings']
+const paths = ['/', '/about', '/settings'].map(i=> base+i);
