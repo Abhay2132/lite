@@ -56,7 +56,7 @@ export const _history = {
 
 window.addEventListener('popstate', () => _history.emit('pop'));
 
-async function navigate(o) {
+async function navigate(o, reInit) {
   const { href, outlet, onerror, onstart, onappend, pop = false } = o;
   onstart();
 
@@ -78,11 +78,11 @@ async function navigate(o) {
     _history.push(href, { href });
   }
   o.onappend(error)
-
+  reInit(); // re attach the navigator to the new links in outlet
 }
 
 /* ---------------------------------------------------------------------------------------- */
-function attachNavigator(a, o) {
+function attachNavigator(a, o, cb) {
   if (a.getAttribute('spa-attached')) return;
 
   a.setAttribute('spa-attached', true);
@@ -97,7 +97,7 @@ function attachNavigator(a, o) {
     let href = a.getAttribute("href")
 
     // log('before navigate',e)
-    await navigate({ ...o, href })
+    await navigate({ ...o, href }, cb)
 
   }, false)
 }
@@ -106,8 +106,9 @@ const ef = () => { }
 var inited = false;
 export function init(o) {
   const { outlet = false, onstart = ef, onappend = ef, onerror = console.error } = o
+
   if (!outlet) throw new Error(`outlet is not defined`)
-  $$('[spa-link]').forEach(a => attachNavigator(a, o));
+  $$('[spa-link]').forEach(a => attachNavigator(a, o, ()=> init(o)));
 
   if (inited) return;
 
@@ -118,7 +119,7 @@ export function init(o) {
     if(_history.states.length ==  0) return;
     let { state: { href }} = _history.states[pos];
     // console.log('_history pop event fired ', me.state)
-    navigate({ ...o, href, pop: true });
+    navigate({ ...o, href, pop: true }, ()=>init(o));
   })
 
   inited = true;
