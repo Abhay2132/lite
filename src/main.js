@@ -1,15 +1,6 @@
 import {init} from "./spa.js";
 import {$, $$} from "./hlpr.js"
 
-let spis = $$('a.side-panel-item-a')
-spis.forEach(a=>{
-  a.addEventListener("click", e =>{
-    e.preventDefault();
-    spis.forEach(a=> a.setAttribute('active', "false"))
-    a.setAttribute('active', "true")
-  })
-})
-
 init((error, {e,data})=>{
   if(error) return console.error(error);
   let a = e.target;
