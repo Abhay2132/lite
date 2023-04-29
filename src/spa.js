@@ -66,12 +66,7 @@ async function navigate(o, reInit) {
 
   let { error = false, html = "", css = "", js = "" } = data;
   if (error) onerror(error, void console.error(error));
-  let view = dp.parseFromString(html, "text/html")
 
-  // for (let c of outlet.children) {
-  //   c.parentNode.removeChild(c);
-  // }
-  // outlet.appendChild(view.documentElement);
   outlet.innerHTML = html;
   if (!pop) {
     _history.replace('', { href: location.pathname })
