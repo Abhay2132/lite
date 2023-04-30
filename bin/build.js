@@ -44,7 +44,8 @@ ls(public)
     let target = j(dist, file.slice(public.length))
     let dir = target.split("/").slice(0, -1).join("/")
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
-    fs.writeFileSync(target, fs.readFileSync(file).toString())
+    // fs.writeFileSync(target, fs.readFileSync(file))
+    fs.createReadStream(file).pipe(fs.createWriteStream(target));
   })
 
 // compile sass
