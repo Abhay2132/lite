@@ -9,7 +9,7 @@ const onappend = (error)=>{
   if(error) return console.error(error);
   
   $('#hmbgr-input').checked = false;
-  let i = paths.indexOf(location.pathname);
+  let i = paths.indexOf(location.pathname.split("/").filter(Boolean).join("/"));
   if(i == -1) return;
 
   $('a.side-panel-item-a[active=true]').setAttribute("active", "false");
@@ -21,4 +21,4 @@ const onstart = ()=> document.body.setAttribute("spa", "loading");
 
 init({outlet: $('main'), onappend, onstart}); 
 
-const paths = ['/', '/about', '/settings'].map(i=> base+i);
+const paths = ['/', '/about', '/settings'].map(i=> (base+i).split("/").filter(Boolean).join("/"))

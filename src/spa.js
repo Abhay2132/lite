@@ -1,9 +1,10 @@
 import { log, $, $$ } from "./hlpr.js"
 
 const base = window.base || ""
-const href2url = (href) => `${base}/_spa${href}_.json`
+const href2url = (href) => "/"+[base, "_spa", href+"_.json"].map(i => i.replace(/[\/]/g,'')).join("/");
 const dp = new DOMParser();
 const pages = new Map();
+const href2route = href => href.startsWith(base) ? href : base+href;
 
 export const _history = {
   e: new Map(),
@@ -31,12 +32,12 @@ export const _history = {
     for (let [key, val] of e) if (Object.is(val.handler, handler)) return;
     e.set(e.size, { cleanup: false, handler })
   },
-  emit(name) {
+  emit(name, data) {
     // log('emit', name)
     if (!this.e.has(name)) return;
     this.e.get(name).forEach(i => {
       if (i.cleanup) cleanup();
-      let a = i.handler(this);
+      let a = i.handler(this, data);
       if (typeof a == "function") i.cleanup = a;
     });
   },
@@ -54,7 +55,7 @@ export const _history = {
   }
 }
 
-window.addEventListener('popstate', () => _history.emit('pop'));
+window.addEventListener('popstate', (e) => _history.emit('pop', e));
 
 async function navigate(o, reInit) {
   const { href, outlet, onerror, onstart, onappend, pop = false } = o;
@@ -69,8 +70,8 @@ async function navigate(o, reInit) {
 
   outlet.innerHTML = html;
   if (!pop) {
-    _history.replace('', { href: location.pathname })
-    _history.push(base+href, { href });
+    _history.replace('', { href: location.pathname.slice(base.length) })
+    _history.push(base + href, { href });
   }
   o.onappend(error)
   reInit(); // re attach the navigator to the new links in outlet
@@ -107,11 +108,13 @@ export function init(o) {
 
   if (inited) return;
 
-  _history.on('pop', function (me) {
+  _history.on('pop', function (me,e) {
     // me.states.pop();
+    console.log(e)
     let {state:{pos}} = history;
     if(typeof pos != 'number') return console.log(history.state);
     if(_history.states.length ==  0) return;
+    
     let { state: { href }} = _history.states[pos];
     // console.log('_history pop event fired ', me.state)
     navigate({ ...o, href, pop: true }, ()=>init(o));
