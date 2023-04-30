@@ -62,7 +62,7 @@ async function navigate(o, reInit) {
 	onstart();
 
 	let url = href2url(href);
-	log({url})
+	//log({url})
 	if (!pages.has(url)) pages.set(url, await (await fetch(url)).json())
 	var data = pages.get(url);
 
@@ -111,7 +111,7 @@ export function init(o) {
 
 	_history.on('pop', function (me,e) {
 		// me.states.pop();
-		console.log(e.type, history)
+		//console.log(e.type, history)
 		let {state:{pos}} = history;
 		if(typeof pos != 'number') return console.log(history.state);
 		if(_history.states.length ==	0) return;
