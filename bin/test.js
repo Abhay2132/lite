@@ -29,9 +29,12 @@ function injectBase (html, base){
   }
   
   // condition , if no location found for `base` injection 
-  if(cur >0) newHTML += html.slice(cur);
-
-  return newHTML || html;
+	newHTML += cur > 0 ? html.slice(cur) : html;
+	let hi = newHTML.indexOf("<head>")+6;
+	newHTML = newHTML.slice(0,hi)
+		+`<script>window.base='${base}'</script>`
+		+ newHTML.slice(hi)
+  return newHTML;
 }
 
 log(injectBase(index, "/lite"))

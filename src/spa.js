@@ -3,7 +3,7 @@ import { log, $, $$ } from "./hlpr.js"
 const normalizeURL = (url)=> (url[0] == '/' && '/')+url.split("/").filter(Boolean).join('/')
 const ef = () => { }
 const base = window.base || ""
-const href2url = (href) => normalizeURL(`${base}/_spa/${href}_.json`);//[base, "_spa", href + "_.json"].map(i => i.replace(/[\/]/g, '')).filter(Boolean).join("/");
+const href2url = (href) => normalizeURL(`${base}/_spa/${href.startsWith(base) ? href.replaceAll(base ,'') : href }_.json`);//[base, "_spa", href + "_.json"].map(i => i.replace(/[\/]/g, '')).filter(Boolean).join("/");
 const pages = new Map();
 
 export const _history = {
@@ -82,11 +82,11 @@ function ExtractRoutes(a) {
 		a = a.parentNode;
 	}
 	let href = a.getAttribute("href")
-	Router.routes.add(normalizeURL(base + href))
+	Router.routes.add(normalizeURL(href))
 
 	a.addEventListener("click", async e => {
 		e.preventDefault();
-		_history.push(base + href);
+		_history.push(href);
 
 	}, false)
 }
