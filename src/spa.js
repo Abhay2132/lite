@@ -1,10 +1,10 @@
 import { log, $, $$ } from "./hlpr.js"
 
+const normalizeURL = (url)=> (url[0] == '/' && '/')+url.split("/").filter(Boolean).join('/')
 const ef = () => { }
 const base = window.base || ""
-const href2url = (href) => "/" + [base, "_spa", href + "_.json"].map(i => i.replace(/[\/]/g, '')).filter(Boolean).join("/");
+const href2url = (href) => normalizeURL(`${base}/_spa/${href}_.json`);//[base, "_spa", href + "_.json"].map(i => i.replace(/[\/]/g, '')).filter(Boolean).join("/");
 const pages = new Map();
-const normalizeURL = (url)=> (url[0] == '/' && '/')+url.split("/").filter(Boolean).join('/')
 
 export const _history = {
 	e: new Map(),
@@ -125,6 +125,6 @@ export function init(o) {
 }
 
 (async ()=>{
-	let url = location.pathname;
+	let url = href2url(location.pathname.slice(base.length))
 	if (!pages.has(url)) pages.set(url, await (await fetch(url)).json())
 })();

@@ -12,7 +12,7 @@ const onappend = (error)=>{
   let i = paths.indexOf(location.pathname.split("/").filter(Boolean).join("/"));
   if(i == -1) return;
 
-  $('a.side-panel-item-a[active=true]').setAttribute("active", "false");
+  $('a.side-panel-item-a[active=true]')?.setAttribute("active", "false");
   $$('a.side-panel-item-a')[i].setAttribute("active", 'true')
 
 }
