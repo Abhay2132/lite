@@ -10,9 +10,11 @@ const dist = j(r(), 'dist');
 const public = j(r(), "public");
 const _spa = j(dist, "_spa");
 makeFreshDir(dist)
-const renderer = engine({ baseLayout, base, globalOptions: { viewDir } })
+const renderer = engine({ useCache : false, baseLayout, base, globalOptions: { viewDir } })
 
+log({base})
 // writes pages -> html in 'dist' dir
+log("building pages");
 for (let page in pages) {
   let view = j(viewDir, pages[page].view + "." + ext);
   renderer(
@@ -32,13 +34,14 @@ for (let page in pages) {
       let fp = j(_spa, page+'_.json');
       let dir = fp.slice(0, _spa.length);
       if(!fs.existsSync(dir)) fs.mkdirSync(dir, {recursive: true});
-      log(html)
+    //  log({html})
       fs.writeFileSync(fp, JSON.stringify({html}))
     }
   )
 }
 
 // Copy 'public' dir content to 'dist'
+log("building public");
 ls(public)
   .forEach((file) => {
     let target = j(dist, file.slice(public.length))
@@ -49,6 +52,7 @@ ls(public)
   })
 
 // compile sass
+log("building sass");
 ls(j(r(), "sass"))
   .forEach(file => {
     let target = j(dist, file.slice(r().length)).replace(".scss", ".css")
@@ -58,7 +62,5 @@ ls(j(r(), "sass"))
     fs.writeFileSync(target, sass.compile(file, { style: "compressed" }).css)
   })
 
+log("bundling js -> dist/js/**/main.js");
 require("./esbuild").build()
-//.then(() => console.timeEnd("Build Finished"))
-
-//log(injectBase(index, "/lite"))
