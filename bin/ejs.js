@@ -1,7 +1,7 @@
 const { log } = require("console");
 const ejs = require("ejs");
 const fs = require("fs");
-const { mode, resolve: r, join: j } = require("path")
+const { mode, r,j,injectBase } = require("./hlpr")
 
 const ejsCache = new Map();
 
@@ -58,9 +58,12 @@ function engine({
             err = e;
             console.log(err);
         }
-
+		
+		rendered = injectBase(rendered, base)
+		//log(rendered)
         callback(err, rendered);
     }
+    
     return renderer;
 }
 

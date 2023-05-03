@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\"",
     "start": "node .",
-    "dev": "npx nodemon --ignore src --ignore public --quiet bin/index.js",
+    "dev": "nodemon --quiet bin/index.js",
     "build": "export NODE_ENV='production' ; node bin/build.js",
     "preview":"npm run build && npx serve dist"
   },
@@ -20,6 +20,6 @@
     "sass": "^1.62.1"
   },
   "nodemonConfig": {
-      "ignore": ["src", "public", "dist"]
+      "ignore": ["src", "public", "dist", "sass" ]
   }
 }

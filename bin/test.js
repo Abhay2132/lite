@@ -1,40 +1,20 @@
 const fs = require("fs")
-const { j, log, r } = require("./hlpr")
+const { j, log,injectBase, r } = require("./hlpr")
+const { hrtime } = require('node:process');
 
 const index = fs.readFileSync(j(r(), "dist", 'index.html')).toString()+ "< href='/lite/india'>";
+var time = [];
 
-function injectBase (html, base){
-  const regexp = /<[^>]*(src|href)(\s*=\s*)("|')\/[^>]*>/g;
-  var newHTML = "";
-  var cur = 0;
-  
-  while ((array1 = regexp.exec(html)) !== null) {
-    let tag = html.slice(array1.index, regexp.lastIndex)
-    let link = tag.match(/(src|href)(\s*=\s*)(("[^"]*")|('[^']*'))/g)[0].split('=')[1].trim().slice(1,-1);
-    
-    // if base already exists skip
-    if(link.startsWith(base)) continue;
-
-    //searches index of  (src|href) attribute
-    let i = tag.search(/(src|href)/g)
-
-    //search for index of quotes (' or ")
-    let j = 1 + i + tag.slice(i).search(/("|')/);
-
-    // extract and append the string from source to returning variable
-    newHTML += html.slice(cur, array1.index + j) + base
-
-    //  shifting the cur the last required tag position
-    cur = array1.index + j
-  }
-  
-  // condition , if no location found for `base` injection 
-	newHTML += cur > 0 ? html.slice(cur) : html;
-	let hi = newHTML.indexOf("<head>")+6;
-	newHTML = newHTML.slice(0,hi)
-		+`<script>window.base='${base}'</script>`
-		+ newHTML.slice(hi)
-  return newHTML;
+for(let i=0; i < 1e5; i++){
+	let t1 = performance.now();
+	injectBase(index, "/lite")
+	let t2 = performance.now();
+	time.push(t2-t1);
 }
 
-log(injectBase(index, "/lite"))
+//time = [[1,2],[1,2],[1,2],[1,2],]
+//time = time.map(([t1,t2]) => t2-t1)
+let avg =( time.reduce((a,b) => a+b, 0))/time.length;
+let min = Math.min(...time)
+let max = Math.max(...time)
+ log ({avg, min, max})

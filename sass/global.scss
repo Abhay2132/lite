@@ -121,6 +121,7 @@ nav {
 
   * {
     z-index: 999 !important;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .side-panel-item {
@@ -131,7 +132,7 @@ nav {
     }
 
     a[active='true'] {
-      box-shadow: inset 0 0 5px #333;
+      box-shadow: inset 0 0 5px #aaa;
     }
 
     a:after {
@@ -171,6 +172,10 @@ nav {
       padding: 7.5px 10px;
       border-radius: 0 5px 5px 0;
       white-space: nowrap;
+      
+    &:hover {
+    	box-shadow: inset 0 0 3px #aaa;
+   }
     }
 
     span {
