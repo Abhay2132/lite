@@ -1,4 +1,5 @@
 import { log, $, $$ } from "./hlpr.js"
+import _history from './history.js';
 
 const normalizeURL = (url)=> (url[0] == '/' && '/')+url.split("/").filter(Boolean).join('/')
 const ef = () => { }
@@ -6,64 +7,12 @@ const base = window.base || ""
 const href2url = (href) => normalizeURL(`${base}/_spa/${href.startsWith(base) ? href.replaceAll(base ,'') : href }_.json`);//[base, "_spa", href + "_.json"].map(i => i.replace(/[\/]/g, '')).filter(Boolean).join("/");
 const pages = new Map();
 
-export const _history = {
-	e: new Map(),
-	states: [],
-	pos: 0,
-	replace(url = "", state = {}) {
-		// this.states[Math.max(this.states.length, 1) - 1] = { url, state };
-		this.states[this.pos] = { url, state }
-		history.replaceState({ pos: this.pos }, null, url);
-		this.emit('replace')
-	},
-	push(url = "", state = {}) {
-		if (this.pos < this.states.length - 1) this.states = this.states.slice(0, pos);
-		// this.states.push({ url, state });
-		this.pos += 1;
-		this.states[this.pos] = { url, state }
-		history.pushState({ pos: this.pos }, null, url)
-		this.emit('push')
-	},
-	on(names = false, handler = false) {
-		if (!(names && handler)) throw new Error(`Either name or Handler is missing in \`on\` method`)
-		names.split(" ").forEach(name => {
-			if (!this.e.has(name)) this.e.set(name, new Map())
-			let e = this.e.get(name)
-
-			for (let [key, val] of e) if (Object.is(val.handler, handler)) return;
-			e.set(e.size, { cleanup: false, handler })
-		})
-	},
-	emit(name, data) {
-		// log('emit', name)
-		if (!this.e.has(name)) return;
-		this.e.get(name).forEach(i => {
-			if (i.cleanup) cleanup();
-			let a = i.handler(this, data);
-			if (typeof a == "function") i.cleanup = a;
-		});
-	},
-	remove(name, handler = false) {
-		if (!this.e.has(name)) return;
-		if (!handler) this.e.delete(name);
-		let e = this.e.get(name)
-		e.forEach((i, k) => {
-			if (i.handler != handler) return;
-			e.delete(k);
-		})
-	},
-	get state() {
-		return this.states.at(-1)
-	}
-}
-
-window.addEventListener('popstate', (e) => _history.emit('pop', e));
-
-async function Navigate(o) {
+async function Navigate(o, signal) {
 	const { href, outlet, onerror, onstart, onappend, pop = false, reInit = ef } = o;
 	onstart();
 	let url = href2url(href);
 	if (!pages.has(url)) pages.set(url, await (await fetch(url)).json())
+	if(signal?.terminate) return;
 	var data = pages.get(url);
 	let { error = false, html = "", css = "", js = "" } = data;
 	if (error) onerror(error, void console.error(error));
@@ -86,23 +35,31 @@ function ExtractRoutes(a) {
 
 	a.addEventListener("click", async e => {
 		e.preventDefault();
+		if(matchURL(href, location.pathname)) return;
 		_history.push(href);
 
 	}, false)
 }
 
+const matchURL = (a,b) => normalizeURL(a) === normalizeURL(b)
+
+// ----------------------------------------< ROUTER >------------------------------------------------------
 const Router = {
 	attach: ef,
 	routes: new Set(),
-	navigate() {
+	navigate({type=false}) {
+		if(!(type == 'push' || type == 'pop')) return;
+		const signal = {terminate :false};
 		let pathname = normalizeURL(location.pathname)
 		if (!this.routes.has(pathname)) return console.log(Router.routes, location.pathname)
-		Navigate({ ...this.o, href: pathname.slice(base.length), reInit: ()=>init(this.o)})
+		Navigate({ ...this.o, href: pathname.slice(base.length), reInit: ()=>init(this.o)}, signal)
+
+		return ()=>{signal.terminate=true}
 	},
 	o:{}
 }
 
-_history.on("push pop", (...a) => Router.navigate(...a))
+_history.listen((e) => Router.navigate(e))
 
 /* `init` makes the initial setups like extracting routes from <a> tags 
 and setup `Router`

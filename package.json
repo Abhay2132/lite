@@ -8,7 +8,7 @@
     "start": "node .",
     "dev": "nodemon --quiet bin/index.js",
     "build": "export NODE_ENV='production' ; node bin/build.js",
-    "preview":"npm run build && npx serve dist"
+    "preview": "npm run build && npx serve dist"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +20,11 @@
     "sass": "^1.62.1"
   },
   "nodemonConfig": {
-      "ignore": ["src", "public", "dist", "sass" ]
+    "ignore": [
+      "src",
+      "public",
+      "dist",
+      "sass"
+    ]
   }
 }

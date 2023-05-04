@@ -1,8 +1,8 @@
-import {init, _history} from "./spa.js";
+import {init} from "./spa.js";
 import {$, $$, log} from "./hlpr.js"
 
 const base = window.base || "";
-window._history = _history;
+//window._history = _history;
 
 const onappend = (error)=>{
   document.body.setAttribute("spa", "loaded");

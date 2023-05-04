@@ -1,10 +1,12 @@
 const fs = require("fs")
 const { j, log,injectBase, r } = require("./hlpr")
 const { hrtime } = require('node:process');
+const sass = require("sass")
 
-const index = fs.readFileSync(j(r(), "dist", 'index.html')).toString()+ "< href='/lite/india'>";
+const file = j(r(), "sass", 'global.scss');
+const index = fs.readFileSync(file).toString()//+ "< href='/lite/india'>";
 var time = [];
-
+/*
 for(let i=0; i < 1e5; i++){
 	let t1 = performance.now();
 	injectBase(index, "/lite")
@@ -18,3 +20,7 @@ let avg =( time.reduce((a,b) => a+b, 0))/time.length;
 let min = Math.min(...time)
 let max = Math.max(...time)
  log ({avg, min, max})
+ */
+ 
+ let {css} = sass.compile(file, {style : 'compressed'})
+ log(sass.compile(file, { style: "compressed" }).css)
