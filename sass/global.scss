@@ -20,7 +20,7 @@ body:has(> nav + #hmbgr-input:checked) {
 
 body[spa="loading"] nav:before {
 	opacity: 1;
-	animation: scalex 5s linear 0s 1 normal;
+	animation: scalex 2s linear 0s 1 normal;
 }
 
 body[spa="loaded"] nav:before {
