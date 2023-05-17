@@ -23,7 +23,7 @@ for (let page in pages) {
     function (err, html) {
       if (err) return console.error(page, "Error\n", err)
       if (!fs.existsSync(j(dist, page))) fs.mkdirSync(j(dist, page), { recursive: true })
-    //  if(base) html = injectBase(html, base);
+      if(base) html = injectBase(html, base);
       fs.writeFileSync(j(dist, page, "index.html"), html);
     }
   )

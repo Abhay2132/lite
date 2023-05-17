@@ -34,7 +34,7 @@ function engine({
         }
 
         var err = null
-        // three cache strategies :-
+        // two cache strategies :-
         // 1. `useCache` (for production mode) : when a page needs dynamically loaded data in `options`
         // 2. `none`     (for dev mode)        : recompile the whole template on every request
         try {
