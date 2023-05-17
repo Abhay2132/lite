@@ -1,3 +1,4 @@
+/*
 const OLD = {
 	e: new Map(),
 	states: [],
@@ -48,6 +49,7 @@ const OLD = {
 		return this.states.at(-1)
 	}
 }
+*/
 
 class _History {
 	#_history = window.history;

@@ -1,13 +1,8 @@
 <div class="side-panel-item">
-  <!-- <input class="hidden" name="spi" type='radio'
-  <% if(typeof checked !="undefined" && Boolean(checked)) {
-    %>checked<% } %> > -->
-  <a href="<%= href %>" id="<%= id %>" spa-link active="<%=active%>" class="side-panel-item-a">
-    <!-- <label for="<%=id%>"> -->
-      <img src="<%=base%>/imgs/icons/<%= icon %>.svg" />
+  <a href="<%= href %>" id="<%= typeof id!=='undefined'?id:'' %>" spa-link active="<%=active%>" class="side-panel-item-a">
+      <img height="25" width="25" loading="lazy" src="<%=base%>/imgs/icons/<%= icon %>.svg" />
       <span>
         <%= text %>
       </span>
-    <!-- </label> -->
   </a>
 </div> 

@@ -48,10 +48,11 @@ const renderer = engine({ baseLayout: 'empty', base, viewDir })
 router.get("/_spa/*", (req, res, next) => {
     let href = req.url.slice(5, -6);
     if (!pages.hasOwnProperty(href)) return res.json({ error: `href (${href}) is not configed in pages.config.js` });
-    let view = j(viewDir, pages[href].view + ".ejs")
-    renderer(view, pages[href], (err, html) => {
+    let {view, css='', js=''} =pages[href]
+    let viewPath = j(viewDir,  view+ ".ejs")
+    renderer(viewPath, pages[href], (err, html) => {
         if (err) return res.json({ error: err.stack }) && console.log(err);
-        res.json({ html });
+        res.json({ html, css, js });
     })
 })
 

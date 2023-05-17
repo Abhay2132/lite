@@ -13,7 +13,8 @@ const pages = {
   "/": e('index', 'Appz', !1),
   "/about": e('about', "About"),
   "/404" : e('404', "Page Not Found !"),
-  "/settings": e('settings', "Settings")
+  "/settings": e('settings', "Settings"),
+  '/crypto': e('crypto', 'Crypto Web API')
 }
 
 module.exports = {
