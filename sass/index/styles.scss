@@ -2,28 +2,28 @@
 	display: flex;
 	position: relative;
 	z-index: 1;
+	//align-items: flex-start;
+	flex-wrap: nowrap;
 	
 	.index-item {
 		text-decoration: none;
 		//display: block;
 		color: #333;
-		width: 200px;;
-		aspect-ratio: 5/7;
-		background: royalblue;
+		width: 150px;
+		aspect-ratio: 10/15;
+		background: #fff;
 		border-radius: 10px 0 10px 0;
-		margin: 20px;
-		padding: 10px 0;
+		margin: 10px auto;
 		overflow: hidden;
-		display: flex;
-		flex-direction: column;
+		border: 1px solid rgba(0,0,0,0.2);
 		
 		.index-item-logo {
+			width: 100%;
 			aspect-ratio: 1/1;
-			width: 80%;
 			position: relative;
-			left: 10%;
-			background: #eee;
-			border-radius: 50%;
+			//left: 10%;
+			background: 0;
+			//border-radius: 50%;
 			z-index: 0;
 			
 			img {
@@ -34,15 +34,30 @@
 				//background: red;
 				transform: scale(0.7);
 				border-radius: 50%;
+				filter: invert(1);
 			}
 		}
 		
 		.index-item-name {
-			margin-top: auto;
+			//margin-top: auto;
 			padding: 7px 10px;
 			text-align: center;
-			background: #eee;
+			background: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.3),rgba(0,0,0,0.4),rgba(0,0,0,0.5));
+			height: 75px;
+			color: #fff;
+			box-sizing: border-box;
+			padding-top: 20px;
 		}
 		
+		&:nth-child(1) {
+			background-image : url('https://i.ibb.co/B2RG2mj/web3.jpg');
+			background-size: cover;
+		}
+	}
+}
+
+@media only screen and (min-width: 600px) {
+	.index-item{
+		margin: 10px !important;
 	}
 }
