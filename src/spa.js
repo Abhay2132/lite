@@ -4,7 +4,11 @@ import _history from './history.js';
 const normalizeURL = (url)=> (url[0] == '/' ? '/':'')+url.split("/").filter(Boolean).join('/')
 const ef = () => { }
 const base = window.base || ""
-const href2url = (href) => normalizeURL(`${base}/_spa/${href.startsWith(base) ? href.replaceAll(base ,'') : href }_.json`);//[base, "_spa", href + "_.json"].map(i => i.replace(/[\/]/g, '')).filter(Boolean).join("/");
+const href2url = (href) => {
+	let path = normalizeURL(`${href.startsWith(base) ? href.slice(base.length) : href }`)
+	let url = normalizeURL(`${base}/_spa/${path}_.json`);
+	return url;
+}
 const pages = new Map();
 
 async function Navigate(o, signal) {

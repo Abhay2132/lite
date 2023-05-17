@@ -91,9 +91,9 @@ nav {
 }
 
 .hidden {
+	opacity:0;
 	position: fixed;
-	transform: scale(0);
-	right: 0;
+	left: -100%;
 }
 
 #hmbgr-input:checked + #side-panel {
@@ -106,7 +106,7 @@ nav {
 	padding: 5px 0;
 	margin: 0 !important;
 	width: var(--sp-w);
-	height: calc(var(--innerH) - 50px);
+	height: calc(var(--innerH, 100vh) - 50px);
 	transition: 200ms;
 	display: flex;
 	flex-direction: column;
@@ -215,7 +215,9 @@ nav:has(+ #hmbgr-input:checked) #hmbgr hr:nth-child(1) {
 }
 
 #hmbgr-input:checked + div + #sp-bg {
-	transform: scale(1);
+	//transform: scale(1);
+	
+	display: block;
 }
 
 label#sp-bg {
@@ -223,11 +225,11 @@ label#sp-bg {
 	width: var(--innerW, 100%);
 	position: fixed;
 	top: 50px;
-	display: block;
+	display: none;
 	left: 0;
 	background: rgba(0, 0, 0, 0.2);
 	z-index: 1;
-	transform: scale(0);
+	//transform: scale(0);
 	backdrop-filter: blur(2px);
 	background: rgba(0, 0, 0, 0.1);
 }

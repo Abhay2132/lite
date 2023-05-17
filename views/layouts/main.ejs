@@ -8,6 +8,10 @@
     <title>
         <%= title %> 
     </title>
+    <meta charset="UTF-8">
+  <meta name="description" content="Free Web Apps">
+  <meta name="keywords" content="HTML, CSS, JavaScript">
+  <meta name="author" content="John Doe">
     <link rel="stylesheet" href="/sass/global.css">
     <link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico" />
 </head>
@@ -28,14 +32,14 @@
     <div id="side-panel">
         <div id='sp-body'>
             <%- include(viewDir + "/ui/spi.ejs" , { href: "/", icon:"home", text:"Home", id:"spi-1", active: title == "Appz"}) %>
-            <%- include(viewDir + "/ui/spi.ejs" , { href: "/crypto", icon:"key", text:"crypto api", id:"spi-1", active: title == "Crypto Web API"}) %>
+            <%- include(viewDir + "/ui/spi.ejs" , { href: "/crypto", icon:"key", text:"crypto api", id:"spi-2", active: title == "Crypto Web API"}) %>
         </div>
         <div id="sp-footer">
-            <%- include(viewDir + "/ui/spi.ejs" , { href: "/about", icon:"about", text:"About", id:"spi-2",active : title == "About"}) %>
-            <%- include(viewDir + "/ui/spi.ejs" , { href: "/settings", icon:"settings", text:"Settings", id:"spi-3" , active: title == "Settings"}) %>
+            <%- include(viewDir + "/ui/spi.ejs" , { href: "/about", icon:"about", text:"About", id:"spi-3",active : title == "About"}) %>
+            <%- include(viewDir + "/ui/spi.ejs" , { href: "/settings", icon:"settings", text:"Settings", id:"spi-4" , active: title == "Settings"}) %>
         </div>
     </div>
-    <label for="hmbgr-input" id="sp-bg"></label>
+  	<label id="sp-bg" for="hmbgr-input" ></label>
     
     <main>
         <%- include(body, {...options}) %>
