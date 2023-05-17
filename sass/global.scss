@@ -43,7 +43,7 @@ nav {
 	&:before {
 		content: "";
 		display: block;
-		height: 4px;
+		height: 3px;
 		width: var(--innerW);
 		position: fixed;
 		left: 0;
@@ -51,6 +51,7 @@ nav {
 		background: royalblue;
 		transform-origin: 0% 50%;
 		border-radius: 0 10px 10px 0;
+		transition: 500ms;
 	}
 
 	#mainHeading {
