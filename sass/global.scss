@@ -38,7 +38,7 @@ nav {
 	height: 50px;
 	display: flex;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-
+	z-index: 99999;
 	// navigation loader bar
 	&:before {
 		content: "";
@@ -115,10 +115,10 @@ nav {
 	overflow: hidden;
 	position: fixed !important;
 	top: 49px;
-	z-index: 998 !important;
 	border-right: 1px solid rgba(0, 0, 0, 0.2);
 	left: -1px;
 	box-sizing: border-box;
+	z-index: 999999;
 
 	#sp-footer {
 		&::before {
@@ -232,6 +232,7 @@ label#sp-bg {
 	//transform: scale(0);
 	backdrop-filter: blur(2px);
 	background: rgba(0, 0, 0, 0.1);
+	z-index: 99999 !important;
 }
 
 @media only screen and (min-width: 600px) {

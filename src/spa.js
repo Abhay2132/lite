@@ -1,4 +1,4 @@
-import { log, $$ } from "./hlpr.js"
+import { log, $$, $ } from "./hlpr.js"
 import _history from './history.js';
 
 const normalizeURL = (url)=> (url[0] == '/' ? '/':'')+url.split("/").filter(Boolean).join('/')
@@ -10,16 +10,31 @@ const href2url = (href) => {
 	return url;
 }
 const pages = new Map();
+const styleCache = new Map();
 
+const style = document.createElement("style")
+$("head").appendChild(style)
+
+const _fetch = url => new Promise( r => fetch(url).then(d => d.text()).then(r).catch(() => r('')))
+const _json = txt => {
+	let json = {};
+	try{ json = JSON.parse(txt) }
+	catch(err) {}
+	return json;
+}
 async function Navigate(o, signal) {
 	//const { href, outlet, onerror, onstart, onappend, pop = false, reInit = ef } = o;
 	o.onstart();
 	let url = href2url(o.href);
-	if (!pages.has(url)) pages.set(url, await (await fetch(url)).json())
+	if (!pages.has(url)) pages.set(url, _json(await _fetch(url))) // await (await fetch(url)).json()
 	if(signal?.terminate) return;
 	var data = pages.get(url);
 	let { error = false, html = "", css = "", js = "" } = data;
 	if (error) onerror(error, void console.error(error));
+	if(css) {
+		if(!styleCache.has(css)) styleCache.set(css, await _fetch(css))
+		style.innerHTML = styleCache.get(css);
+	}
 	if (html ) o.outlet.innerHTML = html;
 	o.onappend(error)
 	//log({css, js});

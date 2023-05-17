@@ -16,7 +16,9 @@ log({base})
 // writes pages -> html in 'dist' dir
 log("building pages");
 for (let page in pages) {
-  let view = j(viewDir, pages[page].view + "." + ext);
+let { view : view_name, css='', js = ''} = pages[page]
+  let view = j(viewDir,  view_name + "." + ext);
+  
   renderer(
     view,
     { ...pages[page], base },
@@ -35,7 +37,7 @@ for (let page in pages) {
       let dir = fp.slice(0, _spa.length);
       if(!fs.existsSync(dir)) fs.mkdirSync(dir, {recursive: true});
     //  log({html})
-      fs.writeFileSync(fp, JSON.stringify({html}))
+      fs.writeFileSync(fp, JSON.stringify({html, css, js}))
     }
   )
 }

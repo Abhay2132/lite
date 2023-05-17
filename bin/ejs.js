@@ -25,7 +25,7 @@ function engine({
     ejsCache.set(baseLayout, ejs.compile(fs.readFileSync(getLayoutPath(baseLayout)).toString(), ejsOptions));
     function renderer(filepath, options, callback) {
         let rendered = "";
-        let renderOpts = { base, ...globalOptions, ...options, options, body: filepath }
+        let renderOpts = { base, ...globalOptions, ...options, options, body: filepath , viewDir}
         let { layout = baseLayout } = options;
         layout = getLayoutPath(layout);
 
