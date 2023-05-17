@@ -36,14 +36,14 @@ function engine({
         var err = null
         // two cache strategies :-
         // 1. `useCache` (for production mode) : when a page needs dynamically loaded data in `options`
-        // 2. `none`     (for dev mode)        : recompile the whole template on every request
+        // 2. `none`     (for dev / build mode)        : recompile the whole template on every request
         try {
 			if (useCache) {
                 rendered = ejsCache.get(layout)(renderOpts)
             }
             else {
-                // rendered = ejs.render(fs.readFileSync(layout).toString(), renderOpts, ejsOptions);
-                return ejs.renderFile(layout, renderOpts, ejsOptions, (err, str)=> callback(err, str))
+             //   rendered = ejs.render(fs.readFileSync(layout).toString(), renderOpts, ejsOptions);
+                return ejs.renderFile(layout, renderOpts, ejsOptions, (err, str)=> callback(err, injectBase(str, base)))
             }
         } catch (e) {
             err = e;

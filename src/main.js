@@ -30,7 +30,7 @@ $$("a.side-panel-item-a").forEach(i=> {
 	paths.push(normalizePath(i.href));
 })
 
-t({paths})
+//t({paths})
 
 const d = {};
 window.addEventListener("scroll", e => {

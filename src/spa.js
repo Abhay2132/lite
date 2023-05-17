@@ -20,9 +20,9 @@ async function Navigate(o, signal) {
 	var data = pages.get(url);
 	let { error = false, html = "", css = "", js = "" } = data;
 	if (error) onerror(error, void console.error(error));
-	o.outlet.innerHTML = html;
+	if (html ) o.outlet.innerHTML = html;
 	o.onappend(error)
-	log({css, js});
+	//log({css, js});
 	o.reInit();
 }
 
@@ -39,7 +39,7 @@ function ExtractRoutes(a) {
 	Router.routes.add(normalizeURL(href))
 
 	a.addEventListener("click", async e => {
-		log("clicked ", e.target);
+		//log("clicked ", e.target);
 		e.preventDefault();
 		if(matchURL(href, location.pathname)) return;
 		_history.push(href);
