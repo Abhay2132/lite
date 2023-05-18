@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\"",
     "start": "node .",
-    "dev": "nodemon --quiet bin/index.js",
+    "dev": "clear ; nodemon --quiet bin/index.js",
     "build": "export NODE_ENV='production' ; node bin/build.js",
     "preview": "npm run build && npx serve dist"
   },

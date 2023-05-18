@@ -26,7 +26,11 @@ async function Navigate(o, signal) {
 	//const { href, outlet, onerror, onstart, onappend, pop = false, reInit = ef } = o;
 	o.onstart();
 	let url = href2url(o.href);
-	if (!pages.has(url)) pages.set(url, _json(await _fetch(url))) // await (await fetch(url)).json()
+	if (!pages.has(url)) {
+		let data_txt = await _fetch(url);
+		if(! data_txt) return location.assign(o.href);
+		pages.set(url, _json(data_txt))
+	}
 	if(signal?.terminate) return;
 	var data = pages.get(url);
 	let { error = false, html = "", css = "", js = "" } = data;

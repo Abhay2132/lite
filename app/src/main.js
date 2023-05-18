@@ -1,6 +1,7 @@
 import {init} from "./spa.js";
 import {$, $$, log} from "./hlpr.js"
 const { table : t } = console;
+import { registerServiceWorker } from "./sw.js";
 
 const base = window.base || "";
 
@@ -30,7 +31,7 @@ $$("a.side-panel-item-a").forEach(i=> {
 	paths.push(normalizePath(i.href));
 })
 
-//t({paths})
+registerServiceWorker()
 
 const d = {};
 window.addEventListener("scroll", e => {

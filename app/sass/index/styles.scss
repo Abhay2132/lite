@@ -1,3 +1,5 @@
+@use '../ui/card1';
+
 #index-box {
 	display: flex;
 	position: relative;
@@ -10,7 +12,7 @@
 		//display: block;
 		color: #333;
 		width: 150px;
-		aspect-ratio: 10/15;
+		aspect-ratio: 5/7;
 		background: #fff;
 		border-radius: 10px 0 10px 0;
 		margin: 10px auto;
@@ -49,9 +51,12 @@
 			padding-top: 20px;
 		}
 		
+		background-size: cover;
 		&:nth-child(1) {
 			background-image : url('https://i.ibb.co/B2RG2mj/web3.jpg');
-			background-size: cover;
+		}
+		&:nth-child(2) {
+			background-image : url('https://i.ibb.co/vzR8W97/contact-night.jpg');
 		}
 	}
 }

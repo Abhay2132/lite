@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
   <meta name="description" content="Free Web Apps">
   <meta name="keywords" content="HTML, CSS, JavaScript">
-  <meta name="author" content="John Doe">
+  <meta name="author" content="Abhay Bisht">
     <link rel="stylesheet" href="/sass/global.css">
     <% if(typeof css !== "undefined" ) { %><link rel="stylesheet" href="<%= css %>" ><%}%>
     <link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico" />
@@ -52,13 +52,7 @@
     	let lastCall = 0;
         function setH() {
             let h = window.innerHeight + "px";
-            let w = window.innerWidth + "px";
             document.documentElement.style.setProperty("--innerH", h);
-       //     document.documentElement.style.setProperty("--innerW", w);
-       //     let timeout = 200;
-     //       performance.now() - lastCall > timeout && setTimeout(setH, timeout);
-      //      lastCall = performance.now();
-     // requestAnimationFrame(setH)
         }
         requestAnimationFrame(setH)
         window.onresize = setH;

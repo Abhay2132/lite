@@ -1,6 +1,6 @@
 const { resolve: r, join: j } = require("path")
 const fs = require("fs");
-const viewDir = j(r(), "views")
+const viewDir = j(r(),"app", "views")
 const argv = new Map();
 const wait = (n, d = {}) => new Promise(r => setTimeout(() => r(d), n || 0));
 
@@ -13,7 +13,7 @@ const base = argv.get("--base") || ""
 const e = (view, title, isStatic = true, loader = () => ({}), extra={}) => {
 	let css = `${base}/sass/${view}/styles.css` 
 	let data = { view, title, isStatic, loader , ...extra}
-	if(fs.existsSync(j(r(), `/sass/${view}/styles.scss`))) data = {...data, css};
+	if(fs.existsSync(j(r(), "app","sass",view,"styles.scss"))) data = {...data, css};
 	return data
 }
 const pages = {
