@@ -32,6 +32,6 @@ async function getRes (e){
 
 function isValid(url) {
 	if(url.startsWith(base)) url = url.slice(base.length);
-	if (url.match(/^((\/js)|(\/sass)|(\/imgs)|(\/_spa))/g)) return true;
-	return false;
+	if (url.match(/^(\/api)/g)) return false;
+	return true;
 }
