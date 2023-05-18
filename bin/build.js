@@ -65,7 +65,7 @@ ls(public).forEach((file) => {
 // compile sass
 log("building sass");
 ls(j(appDir, "sass")).forEach((file) => {
-	let target = j(dist, file.slice(r().length)).replace(".scss", ".css");
+	let target = j(dist, file.slice(appDir.length)).replace(".scss", ".css");
 	let dir = target.split("/").slice(0, -1).join("/");
 	if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
