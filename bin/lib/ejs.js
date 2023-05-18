@@ -2,7 +2,7 @@ const { log } = require("console");
 const ejs = require("ejs");
 const fs = require("fs");
 
-const { mode , j , r , viewDir : defaultViewDir} = require("./hlpr");
+const { mode, j, r, viewDir: defaultViewDir } = require("./hlpr");
 const { injectBase } = require("./html_injector");
 
 const ejsCache = new Map();

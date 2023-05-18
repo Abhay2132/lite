@@ -1,13 +1,11 @@
-const isDev = 0
-console.log("sw")
+const isDev = 1;
+
 const base = "/lite"
 self.addEventListener("install", e => {
-	console.log("install");
 	self.skipWaiting();
 })
 
 self.addEventListener("activate", e => {
-	console.log("activate");
 	self.clients.claim();
 });
 
@@ -15,7 +13,6 @@ self.addEventListener("fetch", e => {
 	if(isDev) return false;
 	const { pathname } = new URL(e.request.url)
 	const valid = isValid(pathname);
-	//console.table({valid})
 	if (!valid) return false;
 
 	return e.respondWith(getRes(e))

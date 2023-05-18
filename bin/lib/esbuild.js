@@ -1,6 +1,6 @@
 const esbuild = require("esbuild");
-const { r, j, log, mode, ls, watcher , appDir} = require("./hlpr");
-const src = j(appDir,"src");
+const { r, j, log, mode, ls, watcher, appDir } = require("./hlpr");
+const src = j(appDir, "src");
 
 const entryPoints = ls(src).filter((item) => item.endsWith("main.js"));
 

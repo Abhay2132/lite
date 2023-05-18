@@ -1,4 +1,3 @@
-
 module.exports = {
 	...require("./hlpr"),
 	htmlInjector: require("./html_injector"),

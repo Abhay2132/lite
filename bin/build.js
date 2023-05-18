@@ -1,5 +1,7 @@
 console.time("Build Finished");
-process.on("beforeExit", () => console.timeEnd("Build Finished"));
+process.on("beforeExit", () =>
+	console.timeEnd("Build Finished")
+);
 const sass = require("sass");
 const { pages, baseLayout, viewDir, ext, base } = require("../pages.config");
 const {
@@ -9,7 +11,7 @@ const {
 	ls,
 	log,
 	makeFreshDir,
-	appDir
+	appDir,
 } = require("./lib");
 const fs = require("fs");
 const { engine } = require("./lib/ejs");
@@ -56,8 +58,8 @@ ls(public).forEach((file) => {
 	let target = j(dist, file.slice(public.length));
 	let dir = target.split("/").slice(0, -1).join("/");
 	if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-	// fs.writeFileSync(target, fs.readFileSync(file))
-	fs.createReadStream(file).pipe(fs.createWriteStream(target));
+	 fs.writeFileSync(target, fs.readFileSync(file))
+	//fs.createReadStream(file).pipe(fs.createWriteStream(target));
 });
 
 // compile sass
@@ -72,3 +74,7 @@ ls(j(appDir, "sass")).forEach((file) => {
 
 log("bundling js -> dist/js/**/main.js");
 require("./lib/esbuild").build();
+
+let sw = fs.readFileSync(j(dist, "sw.js")).toString();
+sw = "const isDev=0;\n" + sw.slice(sw.indexOf("\n"));
+fs.writeFileSync(j(dist, "sw.js"), sw);

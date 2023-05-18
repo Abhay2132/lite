@@ -8,7 +8,8 @@
     "start": "node .",
     "dev": "clear ; nodemon --quiet bin/index.js",
     "build": "export NODE_ENV='production' ; node bin/build.js",
-    "preview": "npm run build && npx serve dist"
+    "preview": "npm run build && npx serve dist",
+    "sw-uglify" : "uglifyjs --compress --mangle -- dist/sw.js > dist/sw.js"
   },
   "keywords": [],
   "author": "",

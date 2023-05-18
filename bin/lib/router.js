@@ -5,7 +5,7 @@ const { baseLayout, base, pages, viewDir } = require("../../pages.config");
 const { resolve: r, join: j } = require("path");
 
 const { readFileSync } = require("fs");
-const { appDir , log } = require("./hlpr")
+const { appDir, log } = require("./hlpr");
 const mode =
 	process.env?.NODE_ENV?.toLowerCase() == "production" ? "pro" : "dev";
 

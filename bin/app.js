@@ -12,7 +12,7 @@ app.engine("ejs", engine({ baseLayout, globalOptions: { viewDir } }));
 app.set("views", viewDir);
 app.set("view engine", "ejs");
 
-app.use(express.static(j(r(), mode == "dev" ? j("app","public") : "dist")));
+app.use(express.static(j(r(), mode == "dev" ? j("app", "public") : "dist")));
 app.use(require("./lib/router"));
 
 // if(mode == 'dev') require("./esbuild").watch();
