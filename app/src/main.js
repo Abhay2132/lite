@@ -1,10 +1,8 @@
-import { updateCache } from "./cache.js";
 import { init } from "./spa.js";
 import { $, $$, log } from "./hlpr.js";
 const { table: t } = console;
 import { registerServiceWorker } from "./sw.js";
 
-navigator.onLine && updateCache();
 const base = window.base || "";
 
 function normalizePath(url) {

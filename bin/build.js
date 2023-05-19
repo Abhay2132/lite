@@ -87,6 +87,10 @@ ls(dist).filter(f => f.endsWith("index.html"))
 })
 }
 
+//Adding base in SW
+let sw = fs.readFileSync(j(dist, "sw.js")).toString();
+fs.writeFileSync(j(dist, "sw.js"), `const _base='${base}'; `+sw)
+
 // Bundling then HASHING
 log("bundling js -> dist/js/**/main.js");
 require("./lib/esbuild").build()

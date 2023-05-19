@@ -1,7 +1,5 @@
 const { base = "" } = window;
-
-const normalizeURL = (url) =>
-	(url[0] == "/" ? "/" : "") + url.split("/").filter(Boolean).join("/");
+import { normalizeURL } from "./hlpr.js";
 console.log("cache updater : 1.0.4");
 function _json(str) {
 	let json = str;

@@ -1,14 +1,16 @@
-//const hashes = typeof _hashes !== "undefined" ? _hashes : {};
 const isDev = typeof _isDev !== "undefined";
 const { log } = console;
-const base = "/lite";
+const base = typeof _base !== "undefined" ? _base : "";
 
 self.addEventListener("install", (e) => {
 	self.skipWaiting();
 });
 
 self.addEventListener("activate", (e) => {
-	self.clients.claim();
+	e.waitUntil(
+		caches.open("lazy").then((c) => c.add(base + "/404")),
+		() => self.clients.claim()
+	);
 });
 
 self.addEventListener("fetch", (e) => {
@@ -21,21 +23,27 @@ async function getRes(e) {
 	if (cr) return cr;
 
 	if (e.request.method.toLowerCase() !== "get") return false;
-	const res = await fetch(e.request.url);
-	
+	var res = false;
+	var err = false;
+	try {
+		res = await fetch(e.request.url);
+	} catch (e) {
+		err = e;
+	}
+	if (err) return;
 	const { pathname } = new URL(e.request.url);
 	const valid = isValid(pathname);
 	if (!valid) return res;
-	
+
 	const clone = await res.clone();
 	const cache = await caches.open("lazy");
 	await cache.put(e.request, clone);
-	
+
 	return res;
 }
 
 function isValid(url) {
-	if (url.startsWith(base)) url = url.slice(base.length+1);
+	if (url.startsWith(base)) url = url.slice(base.length + 1);
 	if (url.match(/^(api)|(_hash)/g)) return false;
 	return true;
 }
