@@ -1,5 +1,5 @@
 const { base = "" } = window;
-import { updateCache } from "./cache.js";
+
 export async function registerServiceWorker() {
 	if ("serviceWorker" in navigator) {
 		navigator.serviceWorker
@@ -9,7 +9,7 @@ export async function registerServiceWorker() {
 			.then((registration) => {
 				registration
 					.update()
-					.then(updateCache)
+					//.then()
 					.catch(() => console.log("sw update failed , maybe you are offline"));
 			})
 			.catch(console.error);
