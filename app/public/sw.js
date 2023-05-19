@@ -13,10 +13,6 @@ self.addEventListener("activate", (e) => {
 
 self.addEventListener("fetch", (e) => {
 	//if(isDev) return false;
-	const { pathname } = new URL(e.request.url);
-	const valid = isValid(pathname);
-	if (!valid) return e.respondWith(false);
-
 	return e.respondWith(getRes(e));
 });
 
@@ -26,9 +22,15 @@ async function getRes(e) {
 
 	if (e.request.method.toLowerCase() !== "get") return false;
 	const res = await fetch(e.request.url);
+	
+	const { pathname } = new URL(e.request.url);
+	const valid = isValid(pathname);
+	if (!valid) return res;
+	
 	const clone = await res.clone();
 	const cache = await caches.open("lazy");
 	await cache.put(e.request, clone);
+	
 	return res;
 }
 
