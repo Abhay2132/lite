@@ -15,7 +15,7 @@ self.addEventListener("fetch", (e) => {
 	//if(isDev) return false;
 	const { pathname } = new URL(e.request.url);
 	const valid = isValid(pathname);
-	if (!valid) return false;
+	if (!valid) return e.respondWith(false);
 
 	return e.respondWith(getRes(e));
 });
@@ -33,7 +33,7 @@ async function getRes(e) {
 }
 
 function isValid(url) {
-	if (url.startsWith(base)) url = url.slice(base.length);
-	if (url.match(/^(\/api)|(\/_hash)/g)) return false;
+	if (url.startsWith(base)) url = url.slice(base.length+1);
+	if (url.match(/^(api)|(_hash)/g)) return false;
 	return true;
 }
