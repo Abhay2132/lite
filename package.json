@@ -8,7 +8,7 @@
     "start": "node .",
     "dev": "clear ; nodemon --quiet bin/index.js",
     "build": "export NODE_ENV='production' ; node bin/build.js",
-    "preview": "npm run build && npx serve dist"
+    "preview": "node bin/build --base=/dist && serve"
   },
   "keywords": [],
   "author": "",
@@ -22,13 +22,12 @@
   },
   "nodemonConfig": {
     "ignore": [
-      "src",
-      "public",
-      "dist",
-      "sass"
+      "app",
+      "dist"
     ]
   },
   "devDependencies": {
-    "eslint": "^8.40.0"
+    "eslint": "^8.40.0",
+    "libe-server": "^1.1.1"
   }
 }

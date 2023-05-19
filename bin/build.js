@@ -12,6 +12,7 @@ const {
 	log,
 	makeFreshDir,
 	appDir,
+	hash : { hash }
 } = require("./lib");
 const fs = require("fs");
 const { engine } = require("./lib/ejs");
@@ -38,7 +39,7 @@ for (let page in pages) {
 		if (err) return console.error(page, "Error\n", err);
 		if (!fs.existsSync(j(dist, page)))
 			fs.mkdirSync(j(dist, page), { recursive: true });
-		if (base) html = injectBase(html, base);
+		//if (base) html = injectBase(html, base);
 		fs.writeFileSync(j(dist, page, "index.html"), html);
 	});
 
@@ -50,6 +51,7 @@ for (let page in pages) {
 		//  log({html})
 		fs.writeFileSync(fp, JSON.stringify({ html, css, js }));
 	});
+	log(view);
 }
 
 // Copy 'public' dir content to 'dist'
@@ -72,9 +74,31 @@ ls(j(appDir, "sass")).forEach((file) => {
 	fs.writeFileSync(target, sass.compile(file, { style: "compressed" }).css);
 });
 
-log("bundling js -> dist/js/**/main.js");
-require("./lib/esbuild").build();
+const normalizeURL = (url) =>
+	(url[0] == "/" ? "/" : "") + url.split("/").filter(Boolean).join("/");
+	
+// INJECTING BASE in htmls
+if(base) {
+log("Injecting base");
+ls(dist).filter(f => f.endsWith("index.html"))
+.forEach( index => {
+	let html = fs.readFileSync(index).toString();
+	fs.writeFileSync(index, injectBase(html, base))
+})
+}
 
-let sw = fs.readFileSync(j(dist, "sw.js")).toString();
-sw = "const isDev=0;\n" + sw.slice(sw.indexOf("\n"));
-fs.writeFileSync(j(dist, "sw.js"), sw);
+// Bundling then HASHING
+log("bundling js -> dist/js/**/main.js");
+require("./lib/esbuild").build()
+.then(() => hash(ls(dist), 6)
+.then( hashes => {
+	log("Building _hashes.json");
+	let new_hashes = {}
+	for(let file in hashes ) {
+		let new_name = base + file.slice(dist.length)
+		if(new_name.endsWith("index.html")) new_name = new_name.slice(0, -10)
+		new_hashes[normalizeURL(new_name)] = hashes[file];
+	}
+	fs.writeFileSync(j(dist, "_hashes.json"), JSON.stringify(new_hashes));
+})
+)

@@ -1,4 +1,4 @@
-@use '../ui/card1';
+@use "../ui/card1";
 
 #index-box {
 	display: flex;
@@ -6,7 +6,7 @@
 	z-index: 1;
 	//align-items: flex-start;
 	flex-wrap: nowrap;
-	
+
 	.index-item {
 		text-decoration: none;
 		//display: block;
@@ -17,8 +17,8 @@
 		border-radius: 10px 0 10px 0;
 		margin: 10px auto;
 		overflow: hidden;
-		border: 1px solid rgba(0,0,0,0.2);
-		
+		border: 1px solid rgba(0, 0, 0, 0.2);
+
 		.index-item-logo {
 			width: 100%;
 			aspect-ratio: 1/1;
@@ -27,7 +27,7 @@
 			background: 0;
 			//border-radius: 50%;
 			z-index: 0;
-			
+
 			img {
 				display: block;
 				position: absolute;
@@ -39,30 +39,37 @@
 				filter: invert(1);
 			}
 		}
-		
+
 		.index-item-name {
 			//margin-top: auto;
 			padding: 7px 10px;
 			text-align: center;
-			background: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.1),rgba(0,0,0,0.2),rgba(0,0,0,0.3),rgba(0,0,0,0.4),rgba(0,0,0,0.5));
+			background: linear-gradient(
+				rgba(0, 0, 0, 0),
+				rgba(0, 0, 0, 0.1),
+				rgba(0, 0, 0, 0.2),
+				rgba(0, 0, 0, 0.3),
+				rgba(0, 0, 0, 0.4),
+				rgba(0, 0, 0, 0.5)
+			);
 			height: 75px;
 			color: #fff;
 			box-sizing: border-box;
 			padding-top: 20px;
 		}
-		
+
 		background-size: cover;
 		&:nth-child(1) {
-			background-image : url('https://i.ibb.co/B2RG2mj/web3.jpg');
+			background-image: url("https://i.ibb.co/B2RG2mj/web3.jpg");
 		}
 		&:nth-child(2) {
-			background-image : url('https://i.ibb.co/vzR8W97/contact-night.jpg');
+			background-image: url("https://i.ibb.co/vzR8W97/contact-night.jpg");
 		}
 	}
 }
 
 @media only screen and (min-width: 600px) {
-	.index-item{
+	.index-item {
 		margin: 10px !important;
 	}
 }

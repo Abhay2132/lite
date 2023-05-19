@@ -3,9 +3,12 @@ const { Router } = require("express");
 const router = Router();
 const { baseLayout, base, pages, viewDir } = require("../../pages.config");
 const { resolve: r, join: j } = require("path");
+const fs = require("fs")
 
 const { readFileSync } = require("fs");
-const { appDir, log } = require("./hlpr");
+const { appDir, log ,ls } = require("./hlpr");
+const { hash } = require("./hash");
+
 const mode =
 	process.env?.NODE_ENV?.toLowerCase() == "production" ? "pro" : "dev";
 
@@ -49,6 +52,25 @@ if (mode == "dev") {
 
 	router.get("/js/*", (req, res, next) => {
 		res.sendFile(j(appDir, "src", req.url.slice(4)));
+	});
+	
+	router.get("/sw.js", (req, res) => {
+		const sw = fs.readFileSync(j(appDir, "public", "sw.js")).toString();
+		const new_sw = "const _isDev = true; \n" + sw;
+			res.setHeader("Content-Type", "application/javascript");
+			res.setHeader("Content-Length", new_sw.length);
+			res.end(new_sw);
+	});
+	
+	router.get("/_hashes.json", (req, res) => {
+		hash(ls(appDir), 6)
+		.then( hashes => {
+			let new_hashes = {}
+			for(let file in hashes){
+				new_hashes[file.slice(appDir.length)] = hashes[file];
+			}
+			res.json(new_hashes);
+		});
 	});
 }
 

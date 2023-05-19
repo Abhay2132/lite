@@ -54,58 +54,62 @@ const OLD = {
 class _History {
 	#_history = window.history;
 	#listeners = [];
-	#states = []
+	#states = [];
 	emit(data) {
 		for (let i = 0; i < this.#listeners.length; i++) {
-			let { cleanup = false, handler } = this.#listeners[i]
+			let { cleanup = false, handler } = this.#listeners[i];
 			if (cleanup) cleanup();
 			let newCleanup = handler(data);
-			if (typeof newCleanup == 'function') this.#listeners[i].cleanup = newCleanup;
+			if (typeof newCleanup == "function")
+				this.#listeners[i].cleanup = newCleanup;
 		}
 	}
 
-	constructor() { }
+	constructor() {}
 
-	push(url='', state={}){
-		this.#_history.pushState(state, null , url);
-		this.emit({type: 'push', state});
+	push(url = "", state = {}) {
+		this.#_history.pushState(state, null, url);
+		this.emit({ type: "push", state });
 		this.#states.push(state);
 		return this;
 	}
 
-	replace(url='', state={}){
-		this.#_history.replaceState(state, null , url);
-		this.emit({type: 'replace', state});
-		this.#states[this.#states.length-1] = state;
+	replace(url = "", state = {}) {
+		this.#_history.replaceState(state, null, url);
+		this.emit({ type: "replace", state });
+		this.#states[this.#states.length - 1] = state;
 		return this;
 	}
 
-	listen(cb){
-		if(typeof cb == 'function')
-			this.#listeners.push({cleanup:false, handler : cb});
+	listen(cb) {
+		if (typeof cb == "function")
+			this.#listeners.push({ cleanup: false, handler: cb });
 	}
 
-	remove (cb){
-		if(!cb) return;
-		for(let i=0;i< this.#listeners.length; i++){
-			if(Object.is(this.#listeners[i], cb)) return this.#listeners.splice(i, 1);
+	remove(cb) {
+		if (!cb) return;
+		for (let i = 0; i < this.#listeners.length; i++) {
+			if (Object.is(this.#listeners[i], cb))
+				return this.#listeners.splice(i, 1);
 		}
 	}
 
-	removeAll(){this.#listeners = []}
+	removeAll() {
+		this.#listeners = [];
+	}
 
-	pop(e={}){
+	pop(e = {}) {
 		this.#states.pop();
-		this.emit({type: 'pop', state: this.#states.at(-1), e});
+		this.emit({ type: "pop", state: this.#states.at(-1), e });
 		return this;
 	}
 
-	get state (){
+	get state() {
 		return this.#states.at(-1);
 	}
 }
 
 const _history = new _History();
-window.addEventListener('popstate', (e) => _history.pop(e));
+window.addEventListener("popstate", (e) => _history.pop(e));
 
 export default _history;
