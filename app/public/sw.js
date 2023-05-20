@@ -20,10 +20,7 @@ self.addEventListener("fetch", (e) => {
 
 async function getRes(e) {
 	const cr = await caches.match(e.request); // cached response
-	if (cr) {
-		cr.url = e.request.url;
-		return cr;
-	}
+	if (cr) return cr;
 
 	if (e.request.method.toLowerCase() !== "get") return false;
 	var res = false;

@@ -2,7 +2,9 @@ import { log, $$, $ } from "./hlpr.js";
 import _history from "./history.js";
 
 const normalizeURL = (url) =>
-	(url[0] == "/" ? "/" : "") + url.split("/").filter(Boolean).join("/");
+	(url[0] == "/" ? "/" : "") +
+	url.split("/").filter(Boolean).join("/") +
+	(url.at(-1) == "/" ? "/" : "");
 const ef = () => {};
 const base = window.base || "";
 const href2url = (href) => {
@@ -68,6 +70,7 @@ function ExtractRoutes(a) {
 		a = a.parentNode;
 	}
 	let href = a.getAttribute("href");
+	if (href.at(-1) !== "/") href += "/";
 	Router.routes.add(normalizeURL(href));
 
 	a.addEventListener(
