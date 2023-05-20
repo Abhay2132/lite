@@ -2,15 +2,14 @@ import { log, $$, $ } from "./hlpr.js";
 import _history from "./history.js";
 
 const normalizeURL = (url) =>
-	(url[0] == "/" ? "/" : "") +
-	url.split("/").filter(Boolean).join("/") +
-	(url.at(-1) == "/" ? "/" : "");
+	(url[0] == "/" ? "/" : "") + url.split("/").filter(Boolean).join("/") + (url.at(-1) == "/" ? "/" : "");
 const ef = () => {};
 const base = window.base || "";
 const href2url = (href) => {
 	let path = normalizeURL(
 		`${href.startsWith(base) ? href.slice(base.length) : href}`
 	);
+	if(path.at(-1) === "/") path = path.slice(0,-1);
 	let url = normalizeURL(`${base}/_spa/${path}_.json`);
 	return url;
 };
@@ -69,8 +68,8 @@ function ExtractRoutes(a) {
 		//if (a.tagName.toLowerCase() == "a") break;
 		a = a.parentNode;
 	}
-	let href = a.getAttribute("href");
-	if (href.at(-1) !== "/") href += "/";
+	let href = a.getAttribute("href")
+	if(href.at(-1) !== "/") href += "/";
 	Router.routes.add(normalizeURL(href));
 
 	a.addEventListener(
