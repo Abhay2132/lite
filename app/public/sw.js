@@ -14,20 +14,20 @@ self.addEventListener("activate", (e) => {
 });
 
 self.addEventListener("fetch", (e) => {
-	if(isDev) return false;
-	
+	if (isDev) return false;
+
 	const { pathname } = new URL(e.request.url);
 	const valid = isValid(pathname);
 	if (!valid) return false;
-	
+
 	return e.respondWith(getRes(e));
 });
 
 async function getRes(e) {
 	const cr = await caches.match(e.request); // cached response
 	if (cr) {
-		let { body, status, statusText , headers } = cr;
-		let res = new Response(body, { status,statusText  , headers});
+		let { body, status, statusText, headers } = cr;
+		let res = new Response(body, { status, statusText, headers });
 		return res;
 	}
 
