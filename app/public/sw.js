@@ -25,7 +25,11 @@ self.addEventListener("fetch", (e) => {
 
 async function getRes(e) {
 	const cr = await caches.match(e.request); // cached response
-	if (cr) return cr;
+	if (cr) {
+		let { body, status, statusText , headers } = cr;
+		let res = new Response(body, { status,statusText  , headers});
+		return res;
+	}
 
 	if (e.request.method.toLowerCase() !== "get") return false;
 	var res = false;
