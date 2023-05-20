@@ -14,7 +14,12 @@ self.addEventListener("activate", (e) => {
 });
 
 self.addEventListener("fetch", (e) => {
-	//if(isDev) return false;
+	if(isDev) return false;
+	
+	const { pathname } = new URL(e.request.url);
+	const valid = isValid(pathname);
+	if (!valid) return false;
+	
 	return e.respondWith(getRes(e));
 });
 
@@ -31,9 +36,6 @@ async function getRes(e) {
 		err = e;
 	}
 	if (err) return new Response("", { status: 500, statusText: "offline" });
-	const { pathname } = new URL(e.request.url);
-	const valid = isValid(pathname);
-	if (!valid) return res;
 
 	const clone = await res.clone();
 	const cache = await caches.open("lazy");
