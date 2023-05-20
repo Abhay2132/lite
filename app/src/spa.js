@@ -69,7 +69,7 @@ function ExtractRoutes(a) {
 		a = a.parentNode;
 	}
 	let href = a.getAttribute("href")
-	if(href.at(-1) !== "/") href += "/";
+	if(href.at(-1) !== "/") href// += "/";
 	Router.routes.add(normalizeURL(href));
 
 	a.addEventListener(
