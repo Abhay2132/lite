@@ -9,7 +9,7 @@ const href2url = (href) => {
 	let path = normalizeURL(
 		`${href.startsWith(base) ? href.slice(base.length) : href}`
 	);
-	if(path.at(-1) === "/") path = path.slice(0,-1);
+	// if(path.at(-1) === "/") path = path.slice(0,-1);
 	let url = normalizeURL(`${base}/_spa/${path}_.json`);
 	return url;
 };
