@@ -1,10 +1,6 @@
-import { log, $$, $ } from "./hlpr.js";
+import { log, $$, $, normalizeURL } from "./hlpr.js";
 import _history from "./history.js";
 
-const normalizeURL = (url) =>
-	(url[0] == "/" ? "/" : "") +
-	url.split("/").filter(Boolean).join("/") +
-	(url.at(-1) == "/" ? "/" : "");
 const ef = () => {};
 const base = window.base || "";
 const href2url = (href) => {
