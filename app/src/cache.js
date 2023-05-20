@@ -24,20 +24,24 @@ export function updateCache() {
 		.then((res) => res.text())
 		.then(_json)
 		.then(async (hashes) => {
-			const cache = await caches.open("lazy");
+			if (!hashes) return console.log("invalid cache hashes ");
+			const caches_names = await caches.keys();
 			const localHashes = _json(localStorage.getItem("hashes"));
 
 			let reloadRequired = false;
 			if (localHashes)
-				for (let req of await cache.keys()) {
-					let url = normalizeURL(req.url.slice(location.origin.length));
-					//console.log(url," : ", hashes[url] ,"!==", localHashes[url])
-					if (!hashes[url]) continue;
-					if (hashes[url] !== localHashes[url])
-						reloadRequired = await update(
-							cache,
-							url.startsWith(base) ? url : base.concat(url)
-						);
+				for (let name of caches_names) {
+					const cache = await caches.open(name);
+					for (let req of await cache.keys()) {
+						let url = normalizeURL(req.url.slice(location.origin.length));
+						//console.log(url," : ", hashes[url] ,"!==", localHashes[url])
+						if (!hashes[url]) continue;
+						if (hashes[url] !== localHashes[url])
+							reloadRequired = await update(
+								cache,
+								url.startsWith(base) ? url : base.concat(url)
+							);
+					}
 				}
 			if (reloadRequired)
 				console.log("reloading page !") || location.assign(location.href);

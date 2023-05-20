@@ -30,7 +30,7 @@ async function getRes(e) {
 	} catch (e) {
 		err = e;
 	}
-	if (err) return;
+	if (err) return new Response("", { status: 500, statusText: "offline" });
 	const { pathname } = new URL(e.request.url);
 	const valid = isValid(pathname);
 	if (!valid) return res;
