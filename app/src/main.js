@@ -39,5 +39,5 @@ registerServiceWorker();
 
 const d = {};
 window.addEventListener("scroll", (e) => {
-	log(document.scrollingElement.scrollTop);
+	//log(document.scrollingElement.scrollTop);
 });
