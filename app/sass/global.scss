@@ -6,7 +6,8 @@ html {
 
 body {
 	margin: 0;
-	--sp-w: 0;
+	//--sp-w: 50%;
+	//--sp-pos-x: -160%;
 }
 
 // disbale scrolling when side-panel opened
@@ -49,8 +50,10 @@ nav {
 		left: 0;
 		top: 0;
 		background: royalblue;
+		background: rgb(127,100,227);
+background: linear-gradient(-90deg, rgba(127,100,227,1) 7%, rgba(203,44,44,0) 82%, rgba(255,38,38,0) 100%);
 		transform-origin: 0% 50%;
-		border-radius: 0 10px 10px 0;
+		border-radius: 50px;
 		transition: 500ms;
 	}
 
@@ -96,10 +99,6 @@ nav {
 	left: -100%;
 }
 
-#hmbgr-input:checked + #side-panel {
-	--sp-w: min(50%, 200px);
-}
-
 /*  SIDE PANEL CSS  */
 #side-panel {
 	background: #fff;
@@ -119,19 +118,13 @@ nav {
 	left: -1px;
 	box-sizing: border-box;
 	z-index: 999999;
+	transform: translateX(var(--sp-pos-x));
+	
+	&>div{
+		//background: rgba(0,0,0,0.3);
+	}
 
 	#sp-footer {
-		&::before {
-			content: "";
-			display: 0;
-			width: calc(100% - 10px);
-			position: relative;
-			height: 1px;
-			background-color: rgba(0, 0, 0, 0.1);
-			top: -5px;
-			left: 5px;
-			border-radius: 5px;
-		}
 		margin-top: auto;
 	}
 
@@ -143,21 +136,31 @@ nav {
 	.side-panel-item {
 		//  	margin: 1px 0;
 		height: 40px;
-		margin: 2px 5px 2px 0;
+		margin: 5px 0 ;//10px 0;
+		padding-right: 5px;
 		position: relative;
-
-		&:last-child:after,
-		&[active="true"]:after,
-		&:hover:after {
-			display: none;
+		//background: red;
+		
+	* {
+		box-sizing: border-box;
+	}
+	
+		&::after {
+			content: "";
+			display: none;// block;
+			position: absolute;
+			left: 5%;
+			bottom: -5px;
+			width: 90%;
+			height: 1px;
+			background: #ddd;// rgba(0,0,0,0.2);
 		}
-		img {
-			height: 25px;
-			aspect-ratio: 1/1;
-			/* background: red; */
-			filter: invert(var(--side-panel-icon-invert)) !important;
-			margin: 0;
-			padding: 0;
+		
+		&:last-child:after,
+		//&[active="true"]:after,
+		//&:hover:after 
+		{
+			display: none;
 		}
 
 		a {
@@ -165,29 +168,45 @@ nav {
 			color: #333;
 			position: relative;
 			text-decoration: 0;
+			
 			display: flex;
+			align-items: center;
+			
 			box-sizing: border-box;
 			height: 40px;
-			padding: 7.5px 8px;
+			padding: 0 5px;
 			border-radius: 0 5px 5px 0;
 			white-space: nowrap;
 			transition: 200ms;
-
+			
+			border: 1px solid #eee;
+			
+			//background: green;
+			
+			img {
+				height: 25px;
+				//width: 25px;
+				aspect-ratio: 1/1;
+				//background: red; 
+				//filter: invert(var(--side-panel-icon-invert)) !important;
+				margin: 0;
+				padding: 0;
+			}
+		
 			&:hover,
 			&:focus {
-				box-shadow: inset 0 0 0 1px #ddd;
-				&:after {
-					background: rgba(0, 0, 0, 0.2);
-				}
-				padding-left: 10px;
+				border-color: #ccc;
+				padding-left: 8px;
 			}
 
 			&[active="true"] {
-				padding-left: 10px;
+				padding-left: 8px;
 				&:after {
 					background: #5c6bc0 !important;
 				}
-				box-shadow: inset 0 0 0 1px #5c6bc0;
+				//box-shadow: inset 0 0 0 1px #5c6bc0;
+				border-color: #5c6bc0;
+				//background: greenyellow;
 			}
 			&:after {
 				content: "";
@@ -195,7 +214,7 @@ nav {
 				position: absolute;
 				top: 0;
 				left: 0;
-				height: 40px;
+				height: 38px;
 				width: 4px;
 				transition: 200ms;
 			}
@@ -236,12 +255,32 @@ label#sp-bg {
 }
 
 @media only screen and (min-width: 600px) {
+	
+	// side panel state for desktop
 	body {
+		// inital condition
 		--sp-w: 45px;
+		--sp-pos-x: 0%;
 	}
 
 	main {
 		margin-left: var(--sp-w);
+	}
+	
+	#hmbgr-input:checked + #side-panel {
+		--sp-w: 200px;
+	}
+}
+
+@media only screen and (max-width: 600px) {
+	
+	body {
+		--sp-w: 50%;
+		--sp-pos-x: -160%;
+	}
+	
+	#hmbgr-input:checked + #side-panel {
+		--sp-pos-x: 0%;
 	}
 }
 

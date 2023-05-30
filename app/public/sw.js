@@ -1,6 +1,8 @@
-const isDev = typeof _isDev !== "undefined";
+const isDev = location.hostname == "localhost";
 const { log } = console;
 const base = typeof _base !== "undefined" ? _base : "";
+
+//log(location.hostname, "Abahy")
 
 self.addEventListener("install", (e) => {
 	self.skipWaiting();
@@ -14,7 +16,7 @@ self.addEventListener("activate", (e) => {
 });
 
 self.addEventListener("fetch", (e) => {
-	if (isDev) return false;
+	if (isDev) return false
 
 	const { pathname } = new URL(e.request.url);
 	const valid = isValid(pathname);
