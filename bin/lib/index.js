@@ -4,5 +4,6 @@ module.exports = {
 	router: require("./router"),
 	esbuild: require("./esbuild"),
 	ejs: require("./ejs"),
-	hash : require("./hash")
+	hash: require("./hash"),
+	dirRouter: require("./dirRouter"),
 };

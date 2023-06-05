@@ -1,0 +1,1 @@
+console.log(require("../../app/pages/page.config.js"));

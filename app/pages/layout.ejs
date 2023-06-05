@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<% var scripts = [] , styles = [] -%>
+<% const mainDeps = extractDeps(_+"/main.ejs") -%>
+<% scripts = [...scripts, mainDeps.filter(a => a.type ==='js').map(a => a?.file)] -%>
+<% styles = [...styles, mainDeps.filter(a => a.type ==='css').map(a => a?.file)] -%>
+
+<head>
+	<script>history.replaceState(null,null,"/"+location.pathname.split("/").filter(Boolean).join("/"))</script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %> 
+    </title>
+    <meta charset="UTF-8">
+  <meta name="description" content="Free Web Apps"/>
+  <meta name="keywords" content="HTML, CSS, JavaScript"/>
+  <meta name="author" content="Abhay Bisht"/>
+  <link rel="stylesheet" href="/sass/global.css">
+  <% if(typeof css !== "undefined" ) { %><link rel="stylesheet" href="<%= css %>" ><%}%>
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico" />
+
+  <% scripts.forEach(src => { %>
+  <script src="<%=src%>"></script>
+  <% }) %>
+  <% styles.forEach(href => { %>
+  <link rel="stylesheet" href="<%=href%>"></script>
+  <% }) %>
+</head>
+
+<body spa="loaded">
+    <nav>
+        <label id="hmbgr" for="hmbgr-input">
+            <hr />
+            <hr />
+            <hr />
+        </label>
+        <div id="mainHeading">
+            <%= typeof(h1)=="undefined" ? "Apps" :h1 %>
+        </div>
+    </nav>
+    <input id="hmbgr-input" type="checkbox" class="hidden"  />
+    
+    <div id="side-panel">
+        <div id='sp-body'>
+            <%- include(_ + "/_ui/spi.ejs" , { href: "/", icon:"home", text:"Home", id:"spi-1", active: title == "Appz"}) %>
+            <%- include(_ + "/_ui/spi.ejs" , { href: "/crypto", icon:"key", text:"crypto api", id:"spi-2", active: title == "Crypto Web API"}) %>
+        </div>
+        <div id="sp-footer">
+            <%- include(_+ "/_ui/spi.ejs" , { href: "/about", icon:"about", text:"About", id:"spi-3",active : title == "About"}) %>
+            <%- include(_ + "/_ui/spi.ejs" , { href: "/settings", icon:"settings", text:"Settings", id:"spi-4" , active: title == "Settings"}) %>
+        </div>
+    </div>
+  	<label id="sp-bg" for="hmbgr-input" ></label>
+    
+    <main>
+        <%- include(body) %>
+    </main>
+</body>
+<script>
+    (() => {
+    	let meta = document.querySelector("meta[name=viewport]");
+    	let lastCall = 0;
+        function setH() {
+            let h = window.innerHeight + "px";
+            document.documentElement.style.setProperty("--innerH", h);
+        }
+        if(typeof window == "undefined") return;
+        requestAnimationFrame(setH)
+        window.onresize = setH;
+  		
+    })();
+</script>
+<script src="/js/main.js" type="module"></script>
+</html>

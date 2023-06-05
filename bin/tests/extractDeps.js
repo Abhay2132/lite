@@ -1,13 +1,9 @@
 const { log } = require("console");
-const ejs = require("ejs");
 const fs = require("fs");
+const { join : j } = require("path");
+const { appDir } = require("../lib/hlpr");
 
-const { mode, j, r, viewDir: defaultViewDir, pagesDir } = require("./hlpr");
-const { injectBase } = require("./html_injector");
-
-const ejsCache = new Map();
-
-// dependency parser
+const rootDir = __dirname;
 const extractFileName = str => str
 ?.match(/\((.*?)\)/g)
 ?.at(0)
@@ -65,21 +61,4 @@ function extractDeps(view, included = new Set()) {
 	return deps;
 }
 
-function engine({ globalOptions = {}, ejsOptions = {} }) {
-	
-	return function renderer(filepath, options, callback) {
-
-		const base = options?.base || globalOptions?.base || "";
-		ejs.renderFile(
-			filepath,
-			{ ...globalOptions, ...options, base, j, extractDeps , __ : filepath.split("/").slice(0,-1).join("/") },
-			ejsOptions,
-			(err, str) => callback(err, injectBase(str, base))
-		);
-	};
-}
-
-module.exports = {
-	engine,
-	extractDeps
-};
+console.log(extractDeps(__dirname+"/view.ejs"))

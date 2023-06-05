@@ -48,7 +48,7 @@ module.exports = {
 	watcher,
 	ls,
 	makeFreshDir,
-
+	pagesDir: j(r(), "app", "pages"),
 	viewDir: j(r(), "app", "views"),
 	appDir: j(r(), "app"),
 };

@@ -4,7 +4,7 @@ import { $, $$, log } from "./hlpr.js";
 const { table: t } = console;
 import { registerServiceWorker } from "./sw.js";
 
-updateCache();
+// updateCache();
 const base = window.base || "";
 
 function normalizePath(url) {

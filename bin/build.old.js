@@ -1,7 +1,5 @@
 console.time("Build Finished");
-process.on("beforeExit", () =>
-	console.timeEnd("Build Finished")
-);
+process.on("beforeExit", () => console.timeEnd("Build Finished"));
 const sass = require("sass");
 const { pages, baseLayout, viewDir, ext, base } = require("../pages.config");
 const {
@@ -12,10 +10,11 @@ const {
 	log,
 	makeFreshDir,
 	appDir,
-	hash : { hash }
+	hash: { hash },
 } = require("./lib");
 const fs = require("fs");
 const { engine } = require("./lib/ejs");
+
 
 const dist = j(r(), "dist");
 const public = j(appDir, "public");
@@ -60,7 +59,7 @@ ls(public).forEach((file) => {
 	let target = j(dist, file.slice(public.length));
 	let dir = target.split("/").slice(0, -1).join("/");
 	if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-	 fs.writeFileSync(target, fs.readFileSync(file))
+	fs.writeFileSync(target, fs.readFileSync(file));
 	//fs.createReadStream(file).pipe(fs.createWriteStream(target));
 });
 
@@ -76,33 +75,47 @@ ls(j(appDir, "sass")).forEach((file) => {
 
 const normalizeURL = (url) =>
 	(url[0] == "/" ? "/" : "") + url.split("/").filter(Boolean).join("/");
-	
+
 // INJECTING BASE in htmls
-if(base) {
-log("Injecting base");
-ls(dist).filter(f => f.endsWith("index.html"))
-.forEach( index => {
-	let html = fs.readFileSync(index).toString();
-	fs.writeFileSync(index, injectBase(html, base))
-})
+if (base) {
+	log("Injecting base");
+	ls(dist)
+		.filter((f) => f.endsWith("index.html"))
+		.forEach((index) => {
+			let html = fs.readFileSync(index).toString();
+			fs.writeFileSync(index, injectBase(html, base));
+		});
 }
 
 //Adding base in SW
 let sw = fs.readFileSync(j(dist, "sw.js")).toString();
-fs.writeFileSync(j(dist, "sw.js"), `const _base='${base}'; `+sw)
+fs.writeFileSync(j(dist, "sw.js"), `const _base='${base}'; ` + sw);
+
+//minifing html
+/*
+(async () => {
+	const { minify } = require('html-minifier-terser');
+	const result = await minify(html, {
+		removeAttributeQuotes: true,
+		minifyJS : true,
+		minifyCSS : true
+	});
+})();
+*/
 
 // Bundling then HASHING
 log("bundling js -> dist/js/**/main.js");
-require("./lib/esbuild").build()
-.then(() => hash(ls(dist), 6)
-.then( hashes => {
-	log("Building _hashes.json");
-	let new_hashes = {}
-	for(let file in hashes ) {
-		let new_name = base + file.slice(dist.length)
-		if(new_name.endsWith("index.html")) new_name = new_name.slice(0, -10)
-		new_hashes[normalizeURL(new_name)] = hashes[file];
-	}
-	fs.writeFileSync(j(dist, "_hashes.json"), JSON.stringify(new_hashes));
-})
-)
+require("./lib/esbuild")
+	.build()
+	.then(() =>
+		hash(ls(dist), 6).then((hashes) => {
+			log("Building _hashes.json");
+			let new_hashes = {};
+			for (let file in hashes) {
+				let new_name = base + file.slice(dist.length);
+				if (new_name.endsWith("index.html")) new_name = new_name.slice(0, -10);
+				new_hashes[normalizeURL(new_name)] = hashes[file];
+			}
+			fs.writeFileSync(j(dist, "_hashes.json"), JSON.stringify(new_hashes));
+		})
+	);
