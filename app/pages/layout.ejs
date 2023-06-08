@@ -2,9 +2,12 @@
 <html lang="en">
 
 <% var scripts = [] , styles = [] -%>
-<% const mainDeps = extractDeps(_+"/main.ejs") -%>
+<% const mainDeps = extractDeps(j(__+"/main.ejs")) -%>
 <% scripts = [...scripts, mainDeps.filter(a => a.type ==='js').map(a => a?.file)] -%>
 <% styles = [...styles, mainDeps.filter(a => a.type ==='css').map(a => a?.file)] -%>
+
+<% if(typeof data == 'undefined') var data = {} %>
+<% const {title = ''} = data %>
 
 <head>
 	<script>history.replaceState(null,null,"/"+location.pathname.split("/").filter(Boolean).join("/"))</script>
@@ -12,7 +15,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <%= title %> 
+        <%= typeof title == "undefined" ? "TITLE" : title %> 
     </title>
     <meta charset="UTF-8">
   <meta name="description" content="Free Web Apps"/>
@@ -21,9 +24,9 @@
   <link rel="stylesheet" href="/sass/global.css">
   <% if(typeof css !== "undefined" ) { %><link rel="stylesheet" href="<%= css %>" ><%}%>
   <link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico" />
-
+  <script src="/js/main.js" type="module" defer></script>
   <% scripts.forEach(src => { %>
-  <script src="<%=src%>"></script>
+  <script src="<%=src%>" type="module" defer></script>
   <% }) %>
   <% styles.forEach(href => { %>
   <link rel="stylesheet" href="<%=href%>"></script>
@@ -45,18 +48,18 @@
     
     <div id="side-panel">
         <div id='sp-body'>
-            <%- include(_ + "/_ui/spi.ejs" , { href: "/", icon:"home", text:"Home", id:"spi-1", active: title == "Appz"}) %>
-            <%- include(_ + "/_ui/spi.ejs" , { href: "/crypto", icon:"key", text:"crypto api", id:"spi-2", active: title == "Crypto Web API"}) %>
+            <%- include("./_ui/spi.ejs" , { href: "/", icon:"home", text:"Home", id:"spi-1", active: title == "Apps"}) %>
+            <%- include("./_ui/spi.ejs" , { href: "/crypto", icon:"key", text:"crypto api", id:"spi-2", active: title == "Crypto Web API"}) %>
         </div>
         <div id="sp-footer">
-            <%- include(_+ "/_ui/spi.ejs" , { href: "/about", icon:"about", text:"About", id:"spi-3",active : title == "About"}) %>
-            <%- include(_ + "/_ui/spi.ejs" , { href: "/settings", icon:"settings", text:"Settings", id:"spi-4" , active: title == "Settings"}) %>
+            <%- include("./_ui/spi.ejs" , { href: "/about", icon:"about", text:"About", id:"spi-3",active : title == "About"}) %>
+            <%- include("./_ui/spi.ejs" , { href: "/settings", icon:"settings", text:"Settings", id:"spi-4" , active: title == "Settings"}) %>
         </div>
     </div>
   	<label id="sp-bg" for="hmbgr-input" ></label>
     
     <main>
-        <%- include(body) %>
+        <%- include(views.main) %>
     </main>
 </body>
 <script>
@@ -73,5 +76,4 @@
   		
     })();
 </script>
-<script src="/js/main.js" type="module"></script>
 </html>

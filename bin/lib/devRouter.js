@@ -28,4 +28,16 @@ router.get("/_hashes.json", (req, res) => {
 	});
 });
 
+router.get("/api/wait", (req, res) => {
+	let n = parseInt(req.query.n || "") || 0;
+	setTimeout(() => res.end(), n);
+});
+
+router.use("/api/serverError", (req, res) => {
+	res.status(500).end("server error")
+});
+
+function r404( res ) {
+	res.status(404).end();
+}
 module.exports = router;

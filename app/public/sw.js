@@ -10,7 +10,7 @@ self.addEventListener("install", (e) => {
 
 self.addEventListener("activate", (e) => {
 	e.waitUntil(
-		caches.open("lazy").then((c) => c.add(base + "/404")),
+		//caches.open("lazy").then((c) => c.add(base + "/404")),
 		() => self.clients.claim()
 	);
 });

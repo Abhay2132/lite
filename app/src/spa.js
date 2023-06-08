@@ -19,19 +19,11 @@ const addScript = src => new Promise( async (res, rej) => {
 	let oldTag = $(`srcipt[src="${src}"]`);
 	oldTag && oldTag.remove();
 	let script = document.createElement("script")
-	script.setAttribute("type", "module");
-	script.setAttribute("data-src", src);
-	if(!scriptCache.has(src)) {
-		let response = await fetch(src)
-		if(response.status >= 400) return res();
-		log(response.status)
-		let text = await response.text()
-		scriptCache.set(src, text);
-	}
-	let js = scriptCache.get(src)
-	script.innerHTML = js;
+	script.type = "module"
 	document.body.appendChild(script);
-	return res();
+	script.onload = res;
+	script.onerror = res;
+	script.src = src
 });
 
 const styler = {
@@ -46,10 +38,10 @@ const styler = {
 			styleCache.set(href, css);
 		} catch(e){
 			error = e;
-			console.error(e)
+			console.error("styler error : ",{href}, e)
 		}
 		}
-		if(error) return
+		if(error || !styleCache.has(href)) return
 		$("head").appendChild(style)
 		style.innerHTML = styleCache.get(href);
 	},
@@ -95,6 +87,7 @@ async function Navigate(o, signal) {
 	}
 	if (signal?.terminate) return;
 	var data = pages.get(url);
+	
 	let { error = false, html = {}, css = [], js = [] } = data;
 	if (error) onerror(error, void console.error(error));
 	for(let url of css) {
@@ -111,6 +104,7 @@ async function Navigate(o, signal) {
 		try{await addScript(src);}
 		catch(e){ console.error(e) } 
 	}
+	
 	o.onappend(error);
 	//log({css, js});
 	o.reInit();

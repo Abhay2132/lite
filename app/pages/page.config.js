@@ -7,8 +7,6 @@ module.exports = {
 	layout : e( "layout.ejs"),
 	views : {
 		"main" : e("main.ejs"),
-		//"#side-panel > div:nth-child(2)" : e("_ui/spi.ejs")
-	},
-	css : [],
-	js : []
+		"#side-panel-body" : e("_ui/spi.ejs")
+	}
 } 

@@ -1,29 +1,36 @@
 const { log } = require("console");
 const ejs = require("ejs");
 const fs = require("fs");
+const { minify } = require('html-minifier-terser');
 
 const { mode, j, r, viewDir: defaultViewDir, pagesDir } = require("./hlpr");
 const { injectBase } = require("./html_injector");
 
 const ejsCache = new Map();
 
-// dependency parser
+/**
+ * extract file name from the source string
+ * ('./_ui/card.ejs') -> ./ul/card.ejs
+ * @param <STRING> str 
+ * @returns <STRING>
+ */
 const extractFileName = str => str
-?.match(/\((.*?)\)/g)
-?.at(0)
-?.match(/(('[^']*')|("[^"]*"))/g)
-?.at(0)
-?.slice(1, -1)
-?.trim()
+	?.match(/\((.*?)\)/g)
+	?.at(0)
+	?.match(/(('[^']*')|("[^"]*"))/g)
+	?.at(0)
+	?.slice(1, -1)
+	?.trim()
 
-// single dependency parser
-function depParser(str) {
-	// console.log(str);
-	let file = extractFileName(str);
-	
-	// if(file[0] == '@') file = appDir
+/**
+ * add types for `extractDeps` according to extension
+ * @param {String} file 
+ * @returns {file : <PATH> , type : <STRING> : (css|js)}
+ */
+function addType(file) {
 	let type = "";
-	switch (file?.split(".")?.at(-1)?.split("?")?.at(0)) {
+	let ext = file?.split(".")?.at(-1)?.split("?")?.at(0);
+	switch (ext) {
 		case "css":
 		case "scss":
 			type = "css";
@@ -36,45 +43,56 @@ function depParser(str) {
 	return { file, type };
 }
 
-// extract dependencies of a predefined format
-// from a view or ejs file
-// format - <%# required('/js/main.js') %>
-function extractDeps(view, included = new Set()) {
+/**
+ * View dependencies extractor
+ * @param {string} view 
+ * @param {int} lvl 
+ * @param {Set} included 
+ * @returns [{file : <PATH> , type : 'css' | 'js' }]
+ */
+function extractDeps(view, lvl = 1, included = new Set()) {
 	const regex1 = /(<%(#|-))\s*((required)|(include))(.*?)(%>)/g;
-	// console.log({view})
-	let deps = [];
-	if(included.has(view) || !fs.existsSync(view)) {console.log('returned', {view, included}); return deps;}
+	let deps = new Set();
+	if (included.has(view) || !fs.existsSync(view)) {
+		return deps;
+	}
 
+	if (fs.statSync(view).isDirectory()) {
+		console.error(new Error(`'${view}' is not file , but directory !\n call stack : ${JSON.stringify([...included])}`))
+		return []
+	}
 	const source = fs.readFileSync(view).toString();
-	// console.log({view, source})
 	included.add(view);
-	const rootDir = view.split('/').slice(0,-1).join('/')
+	const rootDir = view.split('/').slice(0, -1).join('/')
+
 	while ((array1 = regex1.exec(source)) !== null) {
 		const str = array1[0];
 		const include = str.match(/<%-\s*include/g)
-		// console.log(str)
-		if(include) {
-			const filename = extractFileName(str);
-			const absIncludePath = str[0] == '/' ? filename : j(rootDir,filename);
-			deps = [...deps, ...extractDeps(absIncludePath, included)]
+		if (include) {
+			const filename = extractFileName(str) || '';
+			const absIncludePath = filename[0] == '/' ? filename : j(rootDir, filename);
+			extractDeps(absIncludePath, lvl + 1, included)
+				.forEach(e => deps.add(e))
 			continue;
 		}
-		deps.push(depParser(array1[0]));
+		deps.add(extractFileName(array1[0]));
 	}
-	
+
+	if (lvl == 1) return Array.from(deps).map(addType);
 	return deps;
 }
 
 function engine({ globalOptions = {}, ejsOptions = {} }) {
-	
 	return function renderer(filepath, options, callback) {
-
 		const base = options?.base || globalOptions?.base || "";
 		ejs.renderFile(
 			filepath,
-			{ ...globalOptions, ...options, base, j, extractDeps , __ : filepath.split("/").slice(0,-1).join("/") },
-			ejsOptions,
-			(err, str) => callback(err, injectBase(str, base))
+			{ ...globalOptions, ...options, base, j, extractDeps, __: filepath.split("/").slice(0, -1).join("/") },
+			{ ...ejsOptions },
+			async (err, str) => {
+				let html = injectBase(str, base);
+				callback(err, html)
+			}
 		);
 	};
 }

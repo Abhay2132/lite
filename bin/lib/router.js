@@ -16,16 +16,36 @@ const pages = getRoutesFromDir(pagesDir);
 log({pages})
 const mode =
 	process.env?.NODE_ENV?.toLowerCase() == "production" ? "pro" : "dev";
+const plog = (...s) => process.stdout.write(s.join("")+"\n");
 
 router.use((req, res, next) => {
 	let it = performance.now();
-	let l = () =>
+	let l = () => {
+		let {statusCode} = res
+		let {method} = req;
+		let sc_color, method_color;
+		
+		if(statusCode >= 200) sc_color = chalk.black.bgGreen(statusCode);
+		if(statusCode >= 300) sc_color = chalk.black.bgYellow(statusCode);
+		if(statusCode >= 400) sc_color = chalk.white.bgMagenta(statusCode);
+		if(statusCode >= 500) sc_color = chalk.white.bgRed(statusCode);
+		
+		if(method == "DELETE") method_color = chalk.red(method)
+		else if(method == "POST") method_color = chalk.yellow(method)
+		else method_color = chalk.green(method)
+		let s = " ";
+		
+		let time = (performance.now() - it).toFixed(1) + " ms"
+		if(parseInt(time) > 1000) time = (parseInt(time)*(0.001)).toFixed(1)+" sec"
 		console.log(
-			res.statusCode,
-			req.method,
-			req.url,
-			(performance.now() - it).toFixed(1) + " ms"
-		);
+			sc_color, 
+			method_color,
+			" ".repeat(6 - method.length), 
+			time,
+			" ".repeat(9-time.length),  
+			req.url, 
+		)
+		}
 	res.on("finish", l);
 	next();
 });
@@ -90,7 +110,7 @@ const getView = view => new Promise(res => {
 
 router.use((req, res, next) => {
 	if (req.method !== "GET") return next();
-	res.redirect("/404");
+	res.status(404).end()//"/404");
 });
 
 router.use(require("../api/router"));
