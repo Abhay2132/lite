@@ -8,6 +8,33 @@ const { injectBase } = require("./html_injector");
 
 const ejsCache = new Map();
 
+function extractArgument (str){
+	let arg = '';
+	const keywords = {
+		"(":")",
+		'"':'"',
+		"'":"'",
+		"`":"`",
+	}
+	const keywordStack = [];
+	let lastKeyword = '';
+	let opened = false;
+	for(let i = 0; i < str.length; i++){
+		let char = str[i];
+		if(!opened && char == "(") {
+			opened = true;
+			continue;
+		} else {
+			if(keywords.hasOwnProperty(char)) {
+				keywordStack.push(keywords[char]);
+				lastKeyword = keywords[char];
+			}
+			arg += char;
+		}
+	}
+	return arg;
+}
+
 /**
  * extract file name from the source string
  * ('./_ui/card.ejs') -> ./ul/card.ejs
@@ -44,7 +71,7 @@ function addType(file) {
 }
 
 /**
- * View dependencies extractor
+ * View<.ejs> dependencies extractor
  * @param {string} view 
  * @param {int} lvl 
  * @param {Set} included 
