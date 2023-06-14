@@ -48,7 +48,7 @@ function render(url, callback) {
 
 function renderAsync(url) {
 	return new Promise(res => {
-		render(url, res)
+		render(url, (err, html) => res(html))
 	})
 }
 

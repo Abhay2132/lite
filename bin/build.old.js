@@ -2,7 +2,7 @@ console.time("Build Finished");
 process.on("beforeExit", () => console.timeEnd("Build Finished"));
 const sass = require("sass");
 const { pages, baseLayout, viewDir, ext, base } = require("../pages.config");
-const {
+const { 
 	r,
 	htmlInjector: { injectBase },
 	j,
@@ -14,7 +14,6 @@ const {
 } = require("./lib");
 const fs = require("fs");
 const { engine } = require("./lib/ejs");
-
 
 const dist = j(r(), "dist");
 const public = j(appDir, "public");

@@ -1,4 +1,5 @@
 const { resolve: r, join: j } = require("path");
+const path = require("path")
 const fs = require("fs");
 
 const lastWatch = { name: "", time: performance.now() };
@@ -40,6 +41,15 @@ function ls(dir) {
 	return items.filter(Boolean);
 }
 
+function mkDir4File(file){
+	let dir = (file[0] == path.sep ? path.sep : '')
+		+	file
+			.split(path.sep)
+			.slice(0,-1)
+			.join(path.sep);
+	if(!fs.existsSync(dir)) fs.mkdirSync(dir, {recursive: true})
+}
+
 module.exports = {
 	r,
 	j,
@@ -51,5 +61,8 @@ module.exports = {
 	pagesDir: j(r(), "app", "pages"),
 	viewDir: j(r(), "app", "views"),
 	appDir: j(r(), "app"),
-	read : file => fs.readFileSync(file).toString()
+	distDir : j(r(), 'dist'),
+	read : file => fs.readFileSync(file).toString(),
+	mkDir4File,
+	sep : path.sep
 };

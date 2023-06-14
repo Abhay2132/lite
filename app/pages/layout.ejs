@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
- 
 <% var scripts = [] , styles = [] -%>
-	<%console.log({ _,__ , filepath })%>
-<% const mainDeps = extractDeps(j(_+"/main.ejs")) -%>
+	<%# console.log({ views })-%> 
+<% const mainDeps = extractDeps(views.main) -%>
 <% scripts = [...scripts, ...mainDeps.filter(a => a.type ==='js').map(a => a?.file)] -%>
 <% styles = [...styles, ...mainDeps.filter(a => a.type ==='css').map(a => a?.file)] -%>
-<%# console.log({mainDeps, styles}) %>
-<% if(typeof data == 'undefined') var data = {} %>
-<% const {title = 'Appz'} = data ; console.log({data}) %>
-
+<%# console.log({mainDeps, styles}) -%>
+<% if(typeof data == 'undefined') var data = {} -%>
+<% const {title = 'Appz'} = data ; //console.log({data}) -%>
 <head>
 	<script>history.replaceState(null,null,"/"+location.pathname.split("/").filter(Boolean).join("/"))</script>
     <meta charset="UTF-8">

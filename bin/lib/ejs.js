@@ -6,6 +6,7 @@ const path = require("path");
 
 const { mode, j, r, viewDir: defaultViewDir, pagesDir } = require("./hlpr");
 const { injectBase } = require("./html_injector");
+const {base} = require("../../pages.config");
 
 const ejsCache = new Map();
 
@@ -93,6 +94,8 @@ function addType(file) {
   return { file, type };
 }
 
+const addBase = url => url[0] == '/' ? (url.startsWith(base) ? url : base+url) : url;
+
 /**
  * View<.ejs> dependencies extractor
  * @param {string} view
@@ -137,10 +140,10 @@ function extractDeps({ data = {}, view, lvl = 1, included = new Set() }) {
       }).forEach((e) => deps.add(e));
       continue;
     }
-    deps.add(filename);
+    deps.add(addBase(filename));
   }
 
-  if (lvl == 1) return Array.from(deps).map(addType);
+  if (lvl == 1) deps = Array.from(deps).map(addType);
   return deps;
 }
 
