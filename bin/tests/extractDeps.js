@@ -3,5 +3,11 @@ const { pagesDir } = require("../lib/hlpr");
 const { path : _ } = module;
 const { join : j } = require('path')
 
-const deps = extractDeps(j(pagesDir, "layout.ejs"));
+const view = j(pagesDir, "layout.ejs")
+const config = require(j(pagesDir, "page.config.js"))
+const data = {
+	j,
+	...config
+}
+const deps = extractDeps({data , view});
 console.log({deps})

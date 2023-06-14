@@ -7,6 +7,11 @@ module.exports = {
 	layout : e( "layout.ejs"),
 	views : {
 		"main" : e("main.ejs"),
-		"#side-panel-body" : e("_ui/spi.ejs")
+		//"#side-panel-body" : e("_ui/spi.ejs")
+	},
+	data : {
+		title : 'Apps',
+		"[name=description]" : 'Cool webapps hub',
+		"#mainHeading" : "Apps"
 	}
 } 

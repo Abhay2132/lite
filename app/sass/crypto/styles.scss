@@ -1,3 +1,38 @@
-label {
+#crypto {
+	display: block;
+	padding-top: 1px;
+	transform: translateY(-1px);
+	box-sizing: border-box;
+	--w : min(400px, 100%);
+	width: var(--w);
+	position:  absolute;
+	left: calc(50% - var(--w) / 2);
+	// background: olivedrab;
 	
+	label {
+		display: block;
+		//background: yellowgreen;
+		position: relative;
+		padding: 20px;
+		margin: 10px;
+		box-sizing: border-box;
+		border: 2px dashed #333;
+		border-radius: 10px;
+
+		svg {
+			height: 80px;
+			width: 80px;
+			position: relative;
+			left: calc(50% - 40px);
+			display: block;
+			//background: orange;
+		}
+
+		span {
+			//background: red;
+			display: block;
+			text-align: center;
+			font-size: 1.1rem;
+		}
+	}
 }

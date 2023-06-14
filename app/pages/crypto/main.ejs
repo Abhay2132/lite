@@ -1,9 +1,12 @@
-<%# required('/sass/crypto.css') %>
+<%# required('/sass/crypto/styles.css') %>
 <%# required('/js/crypto.js') %>
 
 <div id="crypto">
 	<form class="file-form">
-		<label for="file"> Upload File </label>
+		<label for="file"> 
+			<%- include("../_ui/upload_icon.ejs") %>
+			<span> Upload File </span>
+		</label>
 		<input id="file" type="file" class="hidden" />
 	</form>
 </div>

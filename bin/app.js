@@ -7,7 +7,6 @@ const {
 	ejs: { engine },
 	appDir,
 } = require("./lib");
-const { baseLayout, viewDir } = require("../pages.config");
 const pagesDir = j(appDir, "pages");
 
 //app.engine("ejs", engine({ baseLayout, globalOptions: { _ :  pagesDir } }) );

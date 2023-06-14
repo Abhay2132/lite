@@ -7,5 +7,9 @@ module.exports = {
 	views : {
 		"main" : j(_, "main.ejs"),
 		//"#side-panel > div:nth-child(2)" : e("_ui/spi.ejs")
+	},
+	data : {
+		"title" : "Crypto Web API",
+		"#mainHeading" : "Crypto API"
 	}
 } 

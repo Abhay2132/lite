@@ -1,22 +1,29 @@
 const { pagesDir , j } = require('./hlpr')
 const {defaultConfig} = require('./dirRouter')
 const fs = require('fs')
-const { extractDeps } = require('./ejs')
+const { extractDeps , engine } = require('./ejs')
 /**
- * 
+ * get spa data for build and SSR
  * @param {relative path} pageURL 
  * @returns {error, html, css, js}
  */
-function getData (pageURL){
-  const configPath = j(pagesDir, pageURL, 'page.config.js')
+async function getData (pageURL){
+	const dir = j(pagesDir, pageURL);
+  const configPath = j(dir, 'page.config.js')
   if(!fs.existsSync(configPath)) throw new Error(`config '${configPath}' does not exits !`)
   const config = (require(configPath) || {});
-  const {layout, title, views, data} = defaultConfig(config);
+  config._ = dir;
+  const {layout='', title='', views={}, data={}} = defaultConfig(config);
   if(!fs.existsSync(layout)) return {error: new Error(`layout '${layout}' does not exits !`)}
-
-  let html = {}, css = new Set(), js = new Set(); 
-  const deps = extractDeps(layout);
-  // console.log({layout, pageURL, deps})
+	
+  console.log({config, pageURL})
+  let html = {...data}, css = new Set(), js = new Set();
+  const deps = extractDeps({view: layout, data : {views, data}});
+ 
+  for(let key in views){
+    html[key] = await getView(views[key], config);
+  }
+  
   deps.forEach(dep =>{
     if(dep.type == 'css') css.add(dep.file);
     if(dep.type == 'js') js.add(dep.file);
@@ -24,6 +31,12 @@ function getData (pageURL){
 
   return {html, css : Array.from(css), js : Array.from(js)}
 }
+
+const render = engine({ejsOptions : {filename : pagesDir}})
+const getView = (absPath, config) => new Promise(
+res => render(absPath, config, (err, html) => 
+err ? console.error(err) && res() : res(html) 
+))
 
 module.exports = {
   getData

@@ -6,5 +6,9 @@ module.exports = {
   
   views : {
     'main': j(_, 'main.ejs')
-  }
+  },
+	data : {
+		title : "Settings",
+		"#mainHeading" : "Settings"
+	}
 }

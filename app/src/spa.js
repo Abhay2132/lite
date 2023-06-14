@@ -97,6 +97,7 @@ async function Navigate(o, signal) {
 	// if (html) o.outlet.innerHTML = html;
 	for(let query in html){
 		let out = document.querySelector(query)
+		console.log(out)
 		if(out) out.innerHTML = html[query]
 	}
 	

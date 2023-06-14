@@ -1,8 +1,12 @@
 const fs = require('fs/promises')
-const {dirRouter : {getRoutesFromDir}, j, r, appDir, pagesDir} = require('../lib');
+const {getRoutesFromDir, renderAsync} = require('../lib/dirRouter');
+const {pagesDir} = require('../lib/hlpr')
 
 module.exports = async ()=>{
   console.log('building pages');
   const routes = getRoutesFromDir(pagesDir);
-  console.log(routes);
+  for(let route in routes){
+    let html = await renderAsync(route);
+    console.log({route, html})
+  }
 }

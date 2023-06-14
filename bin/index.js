@@ -5,7 +5,7 @@ const {networkInterfaces} = require("os");
 const { log , table } = console
 
 server.listen(port, async () => {
-	console.clear()
+	//console.clear()
 	let ni = networkInterfaces(),
 		env = (process.env.NODE_ENV||"").toLowerCase() == "production" ? "pro" : "dev"
 	
