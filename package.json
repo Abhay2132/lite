@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\"",
     "start": "node .",
     "dev": "clear ; nodemon --quiet bin/index.js -- --inspect",
-    "build": "export NODE_ENV='production' ; node bin/build.js",
+    "build": "export NODE_ENV='production' ; node bin/build",
     "preview": "node bin/build --base=/dist && serve"
   },
   "keywords": [],
