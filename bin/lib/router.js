@@ -15,15 +15,30 @@ const mode =
 const plog = (...s) => process.stdout.write(s.join("")+"\n");
 
 router.use((...a) => require('./logger')(...a))
-//console.table(pages);
 for (let url in pages) {
 	const {layout, views, data} = require(j(pagesDir, pages[url]));
-	router.get(url, async (req, res) => {
+	router.get(base+url, async (req, res) => {
 		res.render(layout, { _ : j(pagesDir, url), views, data } ); 
 	});
 }
 
-router.get("/error", (req, res) => {
+router.get(base+"/sw.js", (req, res) => {
+	let data = `const __isDev = true; const base = "${base}"; ${fs.readFileSync(j(appDir, "public", "sw.js")).toString()}`
+	res.header("content-type", "application/javascript");
+	res.header("content-length", len);
+});
+// static files router 
+router.use((req, res, next) => {
+	let url = req.url.slice(base.length)
+	let filepath = j(appDir, "public", url)
+	//log({filepath})
+	if(!fs.existsSync(filepath)) return next();//res.status(404).end();
+	return res.sendFile(filepath);
+})
+
+if(base) router.get("/", (req, res) => res.redirect(base+"/"));
+
+router.get(base+"/error", (req, res) => {
 	res.render("error", { layout: "empty" });
 });
 
@@ -33,8 +48,8 @@ if (mode == "dev") {
 
 const renderer = engine({ base , globalOptions : { base , _ : pagesDir} });
 const depCache = new Map();
-router.get("/_spa/*", async (req, res) => {
-	const url = req.url.slice(5, -6);
+router.get(base+"/_spa/*", async (req, res) => {
+	const url = req.url.slice(base.length + 5, -6);
 	res.json(await getData(url));
 })
 

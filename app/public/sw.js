@@ -1,7 +1,8 @@
-const isDev = location.hostname == "localhost";
+
+const isDev = typeof __isDev !== "undefined";//location.hostname == "localhost";
 const { log } = console;
 const base = typeof _base !== "undefined" ? _base : "";
-
+log({isDev})
 //log(location.hostname, "Abahy")
 
 self.addEventListener("install", (e) => {

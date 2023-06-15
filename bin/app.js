@@ -8,13 +8,14 @@ const {
 	appDir,
 } = require("./lib");
 const pagesDir = j(appDir, "pages");
+const fs = require("fs")
 
 //app.engine("ejs", engine({ baseLayout, globalOptions: { _ :  pagesDir } }) );
 app.engine("ejs", engine({ globalOptions: { _: pagesDir }, ejsOptions: {filename: pagesDir} }));
 app.set("views", pagesDir);
 app.set("view engine", "ejs");
 
-app.use(express.static(j(r(), mode == "dev" ? j("app", "public") : "dist")));
+//app.use(express.static(j(r(), mode == "dev" ? j("app", "public") : "dist")));
 app.use(require("./lib/router"));
 
 import("chalk")

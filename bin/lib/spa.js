@@ -3,6 +3,8 @@ const { defaultConfig } = require('./dirRouter')
 const fs = require('fs')
 const { minify } = require('html-minifier-terser')
 const { extractDeps, engine } = require('./ejs')
+const {base} = require("../../pages.config");
+const {injectBase} = require("./html_injector");
 /**
  * get spa data for build and SSR
  * @param {relative path} pageURL 
@@ -39,7 +41,7 @@ async function getData(pageURL) {
   return { html, css: Array.from(css), js: Array.from(js) }
 }
 const render = engine({ ejsOptions: { filename: pagesDir } })
-const getView = (absPath, config) => new Promise(res => render(absPath, config, (err, html) => err ? console.error(err) && res() : res(html)))
+const getView = (absPath, config) => new Promise(res => render(absPath, config, (err, html) => err ? console.error(err) && res() : res(injectBase(html, base))))
 module.exports = {
   getData
 }

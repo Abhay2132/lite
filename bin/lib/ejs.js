@@ -147,9 +147,11 @@ function extractDeps({ data = {}, view, lvl = 1, included = new Set() }) {
   return deps;
 }
 
+const getBase = () => base;
+
 function engine({ globalOptions = {}, ejsOptions = {} }) {
   return function renderer(filepath, options, callback) {
-    const base = options?.base || globalOptions?.base || "";
+    const base = options?.base || globalOptions?.base || getBase() ;
     const renderOptions = {
       ...globalOptions,
       ...options,

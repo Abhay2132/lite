@@ -2,10 +2,11 @@ const { appDir, log, ls, j } = require("./hlpr");
 const { Router } = require("express");
 const router = Router();
 const { hash } = require("./hash")
+const { base } = require("../../pages.config");
 const sass = require("sass");
 
-router.get("/sass/*", (req, res, next) => {
-	let scssPath = j(appDir, req.url); //, req.url.replace(/(\.\.)/g, "").replace(/(\/\/)/g, ''));
+router.get(base+"/sass/*", (req, res, next) => {
+	let scssPath = j(appDir, req.url.slice(base.length)); //, req.url.replace(/(\.\.)/g, "").replace(/(\/\/)/g, ''));
 	if (scssPath.endsWith(".css")) scssPath = scssPath.slice(0, -3) + "scss";
 	if (!require("fs").existsSync(scssPath)) return r404(res);
 	let { css } = sass.compile(scssPath);
@@ -14,11 +15,11 @@ router.get("/sass/*", (req, res, next) => {
 	res.end(css);
 });
 
-router.get("/js/*", (req, res, next) => {
-	res.sendFile(j(appDir, "src", req.url.slice(4)));
+router.get(base+"/js/*", (req, res, next) => {
+	res.sendFile(j(appDir, "src", req.url.slice(base.length + 4)));
 });
 
-router.get("/_hashes.json", (req, res) => {
+router.get(base+"/_hashes.json", (req, res) => {
 	hash(ls(appDir), 6).then((hashes) => {
 		let new_hashes = {};
 		for (let file in hashes) {
@@ -28,7 +29,7 @@ router.get("/_hashes.json", (req, res) => {
 	});
 });
 
-router.get("/api/wait", (req, res) => {
+router.get(base+"/api/wait", (req, res) => {
 	let n = parseInt(req.query.n || "") || 0;
 	setTimeout(() => res.end(), n);
 });
