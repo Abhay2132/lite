@@ -80,7 +80,7 @@ const getOutDatedFiles = () => new Promise(async res => {
 })
 // update CACHES using hashes generated during build
 export async function updateCache() {
-  // console.log("updating cache !")
+console.time('updateCache')
   if (!navigator.onLine) return console.log("updateCache : You are offline !");
   let lazy = await caches.open('lazy');
 
@@ -105,6 +105,7 @@ export async function updateCache() {
       tag.setAttribute('href', oldFile)
     }
   }
+console.timeEnd('updateCache')
 }
 
 async function digestMessage(ab) {
