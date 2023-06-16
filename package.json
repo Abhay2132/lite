@@ -5,8 +5,8 @@
   "main": "bin/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\"",
-    "start": "node .",
-    "dev": "clear ; nodemon --quiet bin/index.js -- --inspect",
+    "start": "export NODE_ENV='production' ; node .",
+    "dev": "clear ; nodemon --quiet bin/index.js",
     "build": "export NODE_ENV='production' ; node bin/build",
     "preview": "node bin/build --base=/dist && serve"
   },

@@ -40,4 +40,20 @@ const sw_hash = (sw, dir, len = 6) =>
 		});
 	});
 
-module.exports = { hash, sw_hash };
+/**
+ * Generate a 6 letter file hash with sha1 algo
+ * used in build time and dev mode so SYNC FS used
+ * Condition : NOT USED IN PRODUCTION RUNTIME
+ * @param {*} file 
+ * @returns <String(6)> hex
+ */
+const fileHash = file => {
+	const hash = createHash('sha1');
+	if(!fs.existsSync(file)) throw new Error(`fileHash Error : '${file}' does not exists !`);
+	if(fs.statSync(file).isDirectory()) throw new Error(`fileHash Error : '${file}' is a directory, not a file !`);
+	hash.update(fs.readFileSync(file));
+	let hex = hash.digest('hex')
+	return hex.slice(0, 6);
+}
+
+module.exports = { hash, fileHash, sw_hash };

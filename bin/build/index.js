@@ -7,19 +7,23 @@ const public = require("./public.js");
 const sass = require("./sass");
 const bundle = require('./bundle');
 const hash = require("./hash")
-const {makeFreshDir, distDir} = require("../lib/hlpr");
+const { makeFreshDir, distDir } = require("../lib/hlpr");
 
 makeFreshDir(distDir);
 
-Promise.all([
-  pages(),
-  spa(),
-  public(),
-  sass(),
-  bundle(),
-  hash(),
-])
-.then(()=>{
+(async () => {
+
+  try {
+    await pages()
+    await spa()
+    await public()
+    await sass()
+    await bundle()
+    await hash()
+  } catch (e) {
+    console.error(e);
+  }
   console.timeEnd('Build Finished')
-})
+})()
+
 // .error(console.error) 

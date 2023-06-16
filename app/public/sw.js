@@ -2,7 +2,7 @@
 const isDev = typeof __isDev !== "undefined";//location.hostname == "localhost";
 const { log } = console;
 const base = typeof _base !== "undefined" ? _base : "";
-log({isDev})
+// log({ isDev })
 //log(location.hostname, "Abahy")
 
 self.addEventListener("install", (e) => {
@@ -17,12 +17,13 @@ self.addEventListener("activate", (e) => {
 });
 
 self.addEventListener("fetch", (e) => {
+	// console.log('fetching', e)
 	if (isDev) return false
 
 	const { pathname } = new URL(e.request.url);
 	const valid = isValid(pathname);
 	if (!valid) return false;
-
+	// console.log('valid', e.request.url)
 	return e.respondWith(getRes(e));
 });
 
@@ -54,5 +55,6 @@ async function getRes(e) {
 function isValid(url) {
 	if (url.startsWith(base)) url = url.slice(base.length + 1);
 	if (url.match(/^(api)|(_hash)/g)) return false;
+	if (url.endsWith('cache.js')) return false;
 	return true;
 }

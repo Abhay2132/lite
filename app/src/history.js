@@ -99,6 +99,7 @@ class _History {
 	}
 
 	pop(e = {}) {
+		
 		this.#states.pop();
 		this.emit({ type: "pop", state: this.#states.at(-1), e });
 		return this;

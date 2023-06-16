@@ -1,4 +1,4 @@
-import { log, $$, $, normalizeURL } from "./hlpr.js";
+import { addBase, log, $$, $, normalizeURL, getExt } from "./hlpr.js";
 import _history from "./history.js";
 
 const ef = () => {};
@@ -110,8 +110,8 @@ async function Navigate(o, signal) {
 	//log({css, js});
 	o.reInit();
 }
-
-/* -------------------------------Extract Routes for <a> tag------------------------------------------ */
+ 
+/* -------------------------------Extract Routes from <a> tag------------------------------------------ */
 function ExtractRoutes(a) {
 	if (a.getAttribute("spa-attached")) return;
 	a.setAttribute("spa-attached", true);
@@ -120,9 +120,9 @@ function ExtractRoutes(a) {
 		//if (a.tagName.toLowerCase() == "a") break;
 		a = a.parentNode;
 	}
-	let href = a.getAttribute("href");
-	if (href.at(-1) !== "/") href; // += "/";
-	Router.routes.add(normalizeURL(href));
+	let href = addBase(normalizeURL(a.getAttribute("href") || ""));
+	// if (href.at(-1) !== "/") href; // += "/";
+	Router.routes.add(href);
 
 	a.addEventListener(
 		"click",
@@ -147,7 +147,7 @@ const Router = {
 		const signal = { terminate: false };
 		let pathname = normalizeURL(location.pathname);
 		if (!this.routes.has(pathname))
-			return console.log(Router.routes, location.pathname);
+			return //console.log(Router.routes, location.href);
 		Navigate(
 			{
 				...this.o,
@@ -190,3 +190,9 @@ export function init(o) {
 	let url = href2url(location.pathname.slice(base.length));
 	if (!pages.has(url)) pages.set(url, await (await fetch(url)).json());
 })();
+
+export function isSPAurl (url){
+	let pathname = url.startsWith("http") ? (new URL(url)).pathname : url;
+	pathname = normalizeURL(pathname);
+	return pathname.startsWith("/_spa") && getExt(pathname) == "json";
+}

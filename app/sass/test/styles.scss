@@ -1,0 +1,17 @@
+#test {
+    width: 100%;
+    background-color: yellowgreen;
+}
+
+.test-card{
+    height: 50vh;
+    width: calc(100% - 10px);
+    line-height: 50vh;
+    text-align: center;
+    font-size: 3rem;
+    background-color: orangered;
+    margin: 5px;
+    color: #fff;
+    display: block;
+    text-decoration: none;
+}
