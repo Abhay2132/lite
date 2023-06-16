@@ -45,24 +45,48 @@ async function fetchHash(url) {
   return newHash;
 }
 
-// update CACHES using hashes generated during build
-export async function updateCache() {
+const getOutDatedFiles = () => new Promise(async res => {
   // console.log("updating cache !")
   let lazy = await caches.open('lazy');
   let keys = await lazy.keys();
   const outdatedFiles = [];
+  const cacheHashes = {}
+  const newHashes = {}
+  let newHashes_len = 0;
   // calculate and fetch hashes of files in 'lazy' cache
+  if(keys.length < 1) return res(outdatedFiles);
   for (let request of keys) {
     let { url } = request;
     let u = new URL(url);
-    if (location.host !== u.host) continue;
+    if (location.host !== u.host) {
+      newHashes_len += 1;
+      continue};
     let response = await lazy.match(url);
     let ab = await response.arrayBuffer()
-    let hash = (await digestMessage(ab)).slice(0, 6);
-    let newHash = await fetchHash(url);
-    if (newHash && hash !== newHash) outdatedFiles.push(url);
+    cacheHashes[url] = (await digestMessage(ab)).slice(0, 6);
+    fetchHash(url)
+      .then(hash => {
+        newHashes[url] = hash;
+        newHashes_len += 1;
+        if (newHashes_len == keys.length) {
+          for (let u in cacheHashes) {
+            if (cacheHashes[u] !== newHashes[u]) outdatedFiles.push(u);
+          }
+          // console.log({ newHashes, cacheHashes })
+          res(outdatedFiles);
+        }
+      })
   }
-  if(outdatedFiles.length) console.log(outdatedFiles);
+})
+// update CACHES using hashes generated during build
+export async function updateCache() {
+  // console.log("updating cache !")
+  if (!navigator.onLine) return console.log("updateCache : You are offline !");
+  let lazy = await caches.open('lazy');
+
+  const outdatedFiles = await getOutDatedFiles();
+  if(outdatedFiles.length) console.log({ outdatedFiles });
+
   for (let oldFile of outdatedFiles) await lazy.delete(oldFile);
   if (outdatedFiles.filter(f => getExt(f) === "js" || isSPAurl(f) || !getExt(f)).length > 0) return location.reload();
 

@@ -55,6 +55,6 @@ async function getRes(e) {
 function isValid(url) {
 	if (url.startsWith(base)) url = url.slice(base.length + 1);
 	if (url.match(/^(api)|(_hash)/g)) return false;
-	if (url.endsWith('cache.js')) return false;
+	// if (url.endsWith('cache.js')) return false;
 	return true;
 }
