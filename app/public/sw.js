@@ -18,7 +18,7 @@ self.addEventListener("activate", (e) => {
 
 self.addEventListener("fetch", (e) => {
 	// console.log('fetching', e)
-	if (isDev) return false
+	// if (isDev) return false
 
 	const { pathname } = new URL(e.request.url);
 	const valid = isValid(pathname);

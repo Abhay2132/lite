@@ -1,20 +1,18 @@
-const { appDir, distDir, log, ls, j } = require("./hlpr");
-const { Router } = require("express");
-const router = Router();
-const { fileHash } = require("./hash")
+const { appDir, distDir, log, ls, j, baseRouter } = require("./hlpr");
 const { base } = require("../../pages.config");
 const sass = require("sass");
 const fs = require("fs")
 const { createHash } = require('node:crypto');
 
-router.get(base + "/sw.js", (req, res) => {
+const router = baseRouter();
+router.get("/sw.js", (req, res) => {
 	let data = `const __isDev = true; \nconst _base = "${base}"; ${fs.readFileSync(j(appDir, "public", "sw.js")).toString()}`
 	res.header("content-type", "application/javascript");
 	res.header("content-length", data.length);
 	res.end(data);
 });
 
-router.get(base + "/sass/*", (req, res, next) => {
+router.get("/sass/*", (req, res, next) => {
 	let scssPath = j(appDir, req.url.slice(base.length)); //, req.url.replace(/(\.\.)/g, "").replace(/(\/\/)/g, ''));
 	if (scssPath.endsWith(".css")) scssPath = scssPath.slice(0, -3) + "scss";
 	if (!require("fs").existsSync(scssPath)) return r404(res);
@@ -24,14 +22,14 @@ router.get(base + "/sass/*", (req, res, next) => {
 	res.end(css);
 });
 
-router.get(base + "/js/*", (req, res, next) => {
+router.get("/js/*", (req, res, next) => {
 	res.sendFile(j(appDir, "src", req.url.slice(base.length + 4)));
 });
 
-router.get(base + "/_hash/*", async (req, res) => {
+router.get("/_hash/*", async (req, res) => {
 	let url = req.url.slice(base.length + 6);
-	if(url.endsWith(".txt")) url = url.slice(0, -4);
-	if(url.match(/\/?_hash\/(.*?)/g)) return res.status(422).json({error : `url should not be '/_hash/_hash/*'`});
+	if (url.endsWith(".txt")) url = url.slice(0, -4);
+	if (url.match(/\/?_hash\/(.*?)/g)) return res.status(422).json({ error: `url should not be '/_hash/_hash/*'` });
 	let response = false;
 	let error = false
 	try {
@@ -48,7 +46,7 @@ router.get(base + "/_hash/*", async (req, res) => {
 		.end(hex);
 })
 
-router.get(base + "/api/wait", (req, res) => {
+router.get("/api/wait", (req, res) => {
 	let n = parseInt(req.query.n || "") || 0;
 	setTimeout(() => res.end(), n);
 });
@@ -60,4 +58,4 @@ router.use("/api/serverError", (req, res) => {
 function r404(res) {
 	res.status(404).end();
 }
-module.exports = router;
+module.exports = router()

@@ -1,6 +1,8 @@
 const { resolve: r, join: j } = require("path");
 const path = require("path")
 const fs = require("fs");
+const {Router : _Router} = require("express")
+const {base} = require("../../pages.config");
 
 const lastWatch = { name: "", time: performance.now() };
 function watcher(dirs, cb) {
@@ -50,6 +52,42 @@ function mkDir4File(file){
 	if(!fs.existsSync(dir)) fs.mkdirSync(dir, {recursive: true})
 }
 
+const addBase = url => url.startsWith(base) ? url : j(base, url);
+
+function baseRouter(){
+	const _router = _Router();
+	const methods = {
+		get(url, ...a){
+			if(typeof url == 'function') return _router.get(url, ...a);
+			return _router.get(addBase(url), ...a);
+		},
+		use(url, ...a){
+			if(typeof url == 'function') return _router.use(url, ...a);
+			return _router.use(addBase(url), ...a);
+		},
+		post(url, ...a){
+			if(typeof url == 'function') return _router.post(url, ...a);
+			return _router.post(addBase(url), ...a);
+		},
+		put(url, ...a){
+			if(typeof url == 'function') return _router.put(url, ...a);
+			return _router.put(addBase(url), ...a);
+		},
+		delete(url, ...a){
+			if(typeof url == 'function') return _router.delete(url, ...a);
+			return _router.delete(addBase(url), ...a);
+		}
+	};
+	function router(){
+		return _router;
+	}
+
+	for(let key in methods){
+		Object.defineProperty(router, key, {value : methods[key],enumerable: false,writable: false,configurable: false})
+	}
+	return router;
+}
+
 module.exports = {
 	r,
 	j,
@@ -64,5 +102,6 @@ module.exports = {
 	distDir : j(r(), 'dist'),
 	read : file => fs.readFileSync(file).toString(),
 	mkDir4File,
-	sep : path.sep
+	sep : path.sep,
+	baseRouter
 };
